@@ -1,0 +1,39 @@
+
+
+  <div class="wrapper">
+    <div class="content">
+      <div class="container my-5">
+        
+        <div class="row justify-content-center">
+            
+        <h2 class="text-center mb-4">Event Details</h2>
+        
+        
+          <div class="col-lg-8 col-md-10 col-sm-12">
+            
+            <img [src]="event.imageURL" class="img-fluid rounded mb-4" alt="{{ event.name }}" />
+            
+            <h2 class="text-primary mb-3">{{ event.name }}</h2>
+
+            <p class="lead mb-4">{{ event.desc }}</p>
+            
+            <ul class="list-unstyled fs-5">
+              <li class="mb-2"><strong>Type:</strong> {{ event.type }}</li>
+              <li class="mb-2"><strong>Location:</strong> {{ event.location }}</li>
+              <li class="mb-2"><strong>Date:</strong> {{ event.doe }}</li>
+              <li class="mb-2"><strong>Organised By:</strong> {{ event.organisedBy }}</li>
+            </ul>
+            
+            <div class="mt-4">
+              <button type="button" class="btn btn-primary me-2" (click)="onRegisterClicked(event.id)">Register</button>
+              <button type="button" class="btn btn-outline-secondary me-2" routerLink="/all-events">Back to Events</button>
+              <button type="button" class="btn btn-outline-success me-2" (click)="onEditClicked(event.id)">Edit Details</button>
+              <button type="button" class="btn btn-outline-danger me-2" (click)="onDeleteClicked(event.id)">Delete</button>
+              <button type="button" class="btn btn-outline-info me-2" (click)="onUnregisterClicked(event.id)">Unregister</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

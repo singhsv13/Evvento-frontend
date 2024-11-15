@@ -1,0 +1,80 @@
+<div class="wrapper">
+  <div class="content">
+    <div class="container mt-5 mb-5">
+      <div class="card m-3" [ngClass]="{ 'form-shadow': eventForm?.touched }">
+        <div class="card-header">
+          <h3 class="m-1 text-center">{{ !isEditMode ? 'Event Registration Form' : 'Edit Event Details' }}</h3>
+        </div>
+
+        <div class="card-body">
+          <form (ngSubmit)="onFormSubmit()" #regForm="ngForm">
+            <div class="form-group">
+              <label for="name">Event Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Enter Event Name" name="eventName" required ngModel #eventName="ngModel" />
+              <div *ngIf="eventName.invalid && eventName.touched">
+                <small>*Invalid event name</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="desc">Description</label>
+              <textarea class="form-control" id="desc" rows="3" placeholder="Enter Event Description" name="eventDesc" required ngModel #eventDesc="ngModel" minlength="10"></textarea>
+              <div *ngIf="eventDesc.invalid && eventDesc.touched">
+                <small>*Enter valid description</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="type">Event Type</label>
+              <select class="form-control" id="type" name="eventType" required ngModel #eventType="ngModel">
+                <option value="" disabled selected>Select Event Type</option>
+                <option *ngFor="let type of eventTypes" [value]="type">{{ type }}</option>
+              </select>
+              <div *ngIf="eventType.invalid && eventType.touched">
+                <small>*Select a valid event type</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="location">Location</label>
+              <input type="text" class="form-control" id="location" placeholder="Enter Event Location" name="eventLoc" ngModel #eventLoc="ngModel" required />
+              <div *ngIf="eventLoc.invalid && eventLoc.touched">
+                <small>*Enter valid location</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="doe">Date of Event</label>
+              <input type="date" class="form-control" id="doe" name="eventDate" required ngModel #doe="ngModel" />
+              <div *ngIf="doe.invalid && doe.touched">
+                <small>*Enter valid Date of Event</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="organisedBy">Organised By</label>
+              <input type="text" class="form-control" id="organisedBy" placeholder="Enter Organizer Name" name="eventOrganiser" ngModel #organiser="ngModel" required />
+              <div *ngIf="organiser.invalid && organiser.touched">
+                <small>*Enter valid organizer</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="image">Event Image URL</label>
+              <input type="text" class="form-control" id="image" placeholder="Enter Event Image URL" name="eventImageURL" #imgUrl="ngModel" required ngModel />
+              <div *ngIf="imgUrl.invalid && imgUrl.touched">
+                <small>*Enter valid image URL</small>
+              </div>
+            </div>
+
+            <div class="card-footer text-center">
+              <button type="submit" class="btn btn-success btn-lg" [disabled]="regForm.invalid">
+                {{ isEditMode ? 'Update Event' : 'Register Event' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

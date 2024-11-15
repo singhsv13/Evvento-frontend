@@ -1,0 +1,46 @@
+<div class="wrapper">
+  <div class="content">
+    <div class="container mt-5" *ngIf="events.length === 0">
+      <h3 class="card-title text-center">Sorry, No Events Subscribed</h3>
+    </div>
+
+    <div class="container mt-4" *ngIf="events.length > 0">
+      <div class="row">
+        <div class="col-md-4" *ngFor="let event of paginatedEvents">
+          <div class="card mb-4">
+            <img [src]="event.imageURL" class="card-img-top" alt="{{ event.name }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ event.name }}</h5>
+              <p class="card-text">{{ event.desc.slice(0, 40) + "..." }}</p>
+              <p class="card-text">
+                <strong>Type:</strong> {{ event.type }} <br>
+                <strong>Location:</strong> {{ event.location }} <br>
+                <strong>Date:</strong> {{ event.doe | date: 'longDate' }} <br>
+                <strong>Organized by:</strong> {{ event.organisedBy }}
+              </p>
+              <a (click)="readMoreClicked(event.id)" class="btn btn-primary">More Info</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav aria-label="Event pagination" *ngIf="totalPages() > 1">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <button class="page-link" (click)="changePage(currentPage - 1)" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </button>
+          </li>
+          <li *ngFor="let page of [].constructor(totalPages()); let i = index" class="page-item" 
+              [class.active]="currentPage === i + 1">
+            <button class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</button>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages()">
+            <button class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>

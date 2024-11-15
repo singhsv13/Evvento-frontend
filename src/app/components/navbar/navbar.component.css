@@ -1,0 +1,15 @@
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .active {
+    color: darkslategrey;
+    font-weight: 600;
+  }
+
+  .navbar-brand {
+    /* color: darkslategrey; */
+    font-weight: bold;
+  }
