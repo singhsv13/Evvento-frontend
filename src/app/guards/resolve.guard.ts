@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { EventService } from '../services/event.service';
-import { UserService } from '../services/user.service';
 import { Event } from '../model/Event';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ResolveGuard implements Resolve<any> {
+export class ResolveGuard implements Resolve<Event[]> {
+  constructor(private eventService: EventService) {}
 
-    constructor(private eventService : EventService, private userService : UserService){}
-
-    resolve() {
-        return ;
-    }
+  resolve(): Observable<Event[]> {
+    return this.eventService.getAllEventsObservable().pipe(
+      catchError((error) => {
+        console.error('Error fetching events:', error);
+        return of([]); 
+      })
+    );
+  }
 }

@@ -13,22 +13,18 @@ import { ResolveGuard } from './guards/resolve.guard';
 
 const routes: Routes = [
   // { path: 'home', component: HomeComponent },
-  { path: 'all-events', component: HomeComponent},
-  { path: 'my-events', component: MyEventsComponent, canActivate : [AuthGuard]},
+  { path: 'all-events', component: HomeComponent, resolve: { events: ResolveGuard } },
+  { path: 'my-events', component: MyEventsComponent, canActivate: [AuthGuard] },
   { path: 'register-event', component: EventFormComponent },
   { path: 'event/edit/:id', component: EventFormComponent },
-  { path: 'event/:id', component: EventDetailsComponent, children : [
-    // { path: 'my-events', component: MyEventsComponent, canActivate : [AuthguardService]},
-  ], resolve : [ResolveGuard]},
+  { path: 'event/:id', component: EventDetailsComponent },
   { path: 'login', component: LoginComponent },
-  // { path: 'register', component: RegisterComponent },
-  { path: '', redirectTo : '/all-events', pathMatch : 'full' },
-  { path: '**', component: NotFoundComponent  },
+  { path: '', redirectTo: '/all-events', pathMatch: 'full' },
+  { path: '**', component: NotFoundComponent },
 ];
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

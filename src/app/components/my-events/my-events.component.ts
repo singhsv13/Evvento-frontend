@@ -22,7 +22,16 @@ export class MyEventsComponent implements OnInit {
   }
 
   fetchRegisteredEvents(): void {
-    this.events = this.eventService.getRegisteredEvents();
+    // this.events = this.eventService.getRegisteredEvents();
+    // this.updatePaginatedEvents();
+    const allRegisteredEvents = this.eventService.getRegisteredEvents();
+    const allEvents = this.eventService.getAllEvents(); // Fetch all current events from the service.
+
+    // Filter registered events to ensure they still exist in the event list.
+    this.events = allRegisteredEvents.filter((registeredEvent) =>
+      allEvents.some((event) => event.id === registeredEvent.id)
+    );
+
     this.updatePaginatedEvents();
   }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Event } from '../model/Event';
-import { BehaviorSubject, map, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, delay, map, Observable, of, Subject } from 'rxjs';
 import { AuthService } from './auth.service';
 import { User } from '../model/User';
 import { Router } from '@angular/router';
@@ -230,6 +230,10 @@ export class EventService {
 
   getAllEvents(): Event[] {
     return this.eventList;
+  }
+
+  getAllEventsObservable(): Observable<Event[]> {
+    return of(this.eventList).pipe(delay(2000)); 
   }
 
   registerForEvent(eventId: string): Observable<boolean> {

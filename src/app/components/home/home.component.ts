@@ -32,8 +32,10 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private eventService: EventService) { }
 
   ngOnInit(): void {
-    this.events = this.eventService.getAllEvents();
-    this.updatePaginatedEvents();
+    this.route.data.subscribe((data) => {
+      this.events = data['events']; // Resolver-provided data
+      this.updatePaginatedEvents();
+    });
   }
 
 
