@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe((data) => {
-      this.events = data['events']; // Resolver-provided data
+      this.events = data['events']; 
       this.updatePaginatedEvents();
     });
   }

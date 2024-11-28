@@ -233,7 +233,7 @@ export class EventService {
   }
 
   getAllEventsObservable(): Observable<Event[]> {
-    return of(this.eventList).pipe(delay(2000)); 
+    return of(this.eventList).pipe(delay(1000)); 
   }
 
   registerForEvent(eventId: string): Observable<boolean> {

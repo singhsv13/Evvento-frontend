@@ -10,10 +10,12 @@ import { AuthGuard } from './guards/auth.guard';
 // import { AuthguardService } from './services/authguard.service';
 import { MyEventsComponent } from './components/my-events/my-events.component';
 import { ResolveGuard } from './guards/resolve.guard';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
   // { path: 'home', component: HomeComponent },
   { path: 'all-events', component: HomeComponent, resolve: { events: ResolveGuard } },
+  { path: 'profile', component: ProfileComponent },
   { path: 'my-events', component: MyEventsComponent, canActivate: [AuthGuard] },
   { path: 'register-event', component: EventFormComponent },
   { path: 'event/edit/:id', component: EventFormComponent },

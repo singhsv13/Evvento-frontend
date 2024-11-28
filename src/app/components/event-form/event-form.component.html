@@ -1,74 +1,163 @@
 <div class="wrapper">
   <div class="content">
-    <div class="container mt-5 mb-5">
-      <div class="card m-3" [ngClass]="{ 'form-shadow': eventForm?.touched }">
-        <div class="card-header">
-          <h3 class="m-1 text-center">{{ !isEditMode ? 'Event Registration Form' : 'Edit Event Details' }}</h3>
+    <div class="container mt-4 mb-4">
+      <div
+        class="card mx-auto shadow"
+        style="max-width: 500px; border-radius: 12px;"
+        [ngClass]="{ 'form-shadow': eventForm?.touched }"
+      >
+        <!-- Card Header -->
+        <div
+          class="card-header text-center text-white"
+          style="background-color: #4a90e2; border-top-left-radius: 12px; border-top-right-radius: 12px;"
+        >
+          <h5 class="m-0">{{ !isEditMode ? 'Register Event' : 'Edit Event' }}</h5>
         </div>
 
-        <div class="card-body">
-          <form (ngSubmit)="onFormSubmit()" #regForm="ngForm">
-            <div class="form-group">
-              <label for="name">Event Name</label>
-              <input type="text" class="form-control" id="name" placeholder="Enter Event Name" name="eventName" required ngModel #eventName="ngModel" />
-              <div *ngIf="eventName.invalid && eventName.touched">
+        <!-- Card Body -->
+        <div class="card-body px-4 py-3">
+          <form
+            (ngSubmit)="onFormSubmit()"
+            #regForm="ngForm"
+            class="needs-validation"
+          >
+            <!-- Event Name -->
+            <div class="mb-3">
+              <label for="name" class="form-label small text-muted">Event Name</label>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                id="name"
+                placeholder="Enter event name"
+                name="eventName"
+                required
+                ngModel
+                #eventName="ngModel"
+              />
+              <div *ngIf="eventName.invalid && eventName.touched" class="text-danger">
                 <small>*Invalid event name</small>
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="desc">Description</label>
-              <textarea class="form-control" id="desc" rows="3" placeholder="Enter Event Description" name="eventDesc" required ngModel #eventDesc="ngModel" minlength="10"></textarea>
-              <div *ngIf="eventDesc.invalid && eventDesc.touched">
-                <small>*Enter valid description</small>
+            <!-- Description -->
+            <div class="mb-3">
+              <label for="desc" class="form-label small text-muted">Description</label>
+              <textarea
+                class="form-control form-control-sm"
+                id="desc"
+                rows="2"
+                placeholder="Event description (min 10 characters)"
+                name="eventDesc"
+                required
+                ngModel
+                #eventDesc="ngModel"
+                minlength="10"
+              ></textarea>
+              <div *ngIf="eventDesc.invalid && eventDesc.touched" class="text-danger">
+                <small>*Enter a valid description</small>
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="type">Event Type</label>
-              <select class="form-control" id="type" name="eventType" required ngModel #eventType="ngModel">
-                <option value="" disabled selected>Select Event Type</option>
-                <option *ngFor="let type of eventTypes" [value]="type">{{ type }}</option>
+            <!-- Event Type -->
+            <div class="mb-3">
+              <label for="type" class="form-label small text-muted">Event Type</label>
+              <select
+                class="form-select form-select-sm"
+                id="type"
+                name="eventType"
+                required
+                ngModel
+                #eventType="ngModel"
+              >
+                <option value="" disabled selected>Select type</option>
+                <option *ngFor="let type of eventTypes" [value]="type">
+                  {{ type }}
+                </option>
               </select>
-              <div *ngIf="eventType.invalid && eventType.touched">
+              <div *ngIf="eventType.invalid && eventType.touched" class="text-danger">
                 <small>*Select a valid event type</small>
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="location">Location</label>
-              <input type="text" class="form-control" id="location" placeholder="Enter Event Location" name="eventLoc" ngModel #eventLoc="ngModel" required />
-              <div *ngIf="eventLoc.invalid && eventLoc.touched">
-                <small>*Enter valid location</small>
+            <!-- Location -->
+            <div class="mb-3">
+              <label for="location" class="form-label small text-muted">Location</label>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                id="location"
+                placeholder="Enter event location"
+                name="eventLoc"
+                ngModel
+                #eventLoc="ngModel"
+                required
+              />
+              <div *ngIf="eventLoc.invalid && eventLoc.touched" class="text-danger">
+                <small>*Enter a valid location</small>
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="doe">Date of Event</label>
-              <input type="date" class="form-control" id="doe" name="eventDate" required ngModel #doe="ngModel" />
-              <div *ngIf="doe.invalid && doe.touched">
-                <small>*Enter valid Date of Event</small>
+            <!-- Date of Event -->
+            <div class="mb-3">
+              <label for="doe" class="form-label small text-muted">Date of Event</label>
+              <input
+                type="date"
+                class="form-control form-control-sm"
+                id="doe"
+                name="eventDate"
+                required
+                ngModel
+                #doe="ngModel"
+              />
+              <div *ngIf="doe.invalid && doe.touched" class="text-danger">
+                <small>*Enter a valid date</small>
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="organisedBy">Organised By</label>
-              <input type="text" class="form-control" id="organisedBy" placeholder="Enter Organizer Name" name="eventOrganiser" ngModel #organiser="ngModel" required />
-              <div *ngIf="organiser.invalid && organiser.touched">
-                <small>*Enter valid organizer</small>
+            <!-- Organized By -->
+            <div class="mb-3">
+              <label for="organisedBy" class="form-label small text-muted">Organized By</label>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                id="organisedBy"
+                placeholder="Enter organizer name"
+                name="eventOrganiser"
+                ngModel
+                #organiser="ngModel"
+                required
+              />
+              <div *ngIf="organiser.invalid && organiser.touched" class="text-danger">
+                <small>*Enter a valid organizer</small>
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="image">Event Image URL</label>
-              <input type="text" class="form-control" id="image" placeholder="Enter Event Image URL" name="eventImageURL" #imgUrl="ngModel" required ngModel />
-              <div *ngIf="imgUrl.invalid && imgUrl.touched">
-                <small>*Enter valid image URL</small>
+            <!-- Image URL -->
+            <div class="mb-3">
+              <label for="image" class="form-label small text-muted">Event Image URL</label>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                id="image"
+                placeholder="Enter image URL"
+                name="eventImageURL"
+                ngModel
+                #imgUrl="ngModel"
+                required
+              />
+              <div *ngIf="imgUrl.invalid && imgUrl.touched" class="text-danger">
+                <small>*Enter a valid image URL</small>
               </div>
             </div>
 
-            <div class="card-footer text-center">
-              <button type="submit" class="btn btn-success btn-lg" [disabled]="regForm.invalid">
+            <!-- Submit Button -->
+            <div class="text-center">
+              <button
+                type="submit"
+                class="btn btn-primary btn-sm w-100"
+                style="background-color: #4a90e2; border: none;"
+                [disabled]="regForm.invalid"
+              >
                 {{ isEditMode ? 'Update Event' : 'Register Event' }}
               </button>
             </div>

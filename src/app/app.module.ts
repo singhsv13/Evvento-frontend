@@ -14,6 +14,7 @@ import { EventFormComponent } from './components/event-form/event-form.component
 import { EventDetailsComponent } from './components/event-details/event-details.component';
 import { MyEventsComponent } from './components/my-events/my-events.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { FooterComponent } from './components/footer/footer.component';
     EventFormComponent,
     EventDetailsComponent,
     MyEventsComponent,
-    FooterComponent
+    FooterComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

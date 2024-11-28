@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit {
       alert('Invalid Login Credentials !!!');
     } else {
       alert(`Welcome ${user.name}, You are Logged In!!!`);
-      this.router.navigate(['/all-events']);
+      this.router.navigate(['profile']);
     }
   }
 
@@ -86,7 +86,7 @@ export class LoginComponent implements OnInit {
       alert('Registration Failed. User Already Exists !!!');
     } else {
       alert(`Welcome ${user.name}, You have successfully registered!`);
-      this.router.navigate(['/all-events']);
+      this.router.navigate(['profile']);
     }
   }
 }
