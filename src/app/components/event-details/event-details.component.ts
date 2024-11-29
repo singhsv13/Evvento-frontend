@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EventService } from 'src/app/services/event.service';
 import { Event } from 'src/app/model/Event';
 import { ActivatedRoute, Router } from '@angular/router';
+import { error } from 'console';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
