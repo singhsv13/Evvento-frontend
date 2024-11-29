@@ -1,50 +1,97 @@
 <div class="wrapper">
   <div class="content">
     <div class="container mt-4">
-
       <!-- Sort and Filter Controls -->
-      <div class="d-flex justify-content-between mb-4 align-items-center">
+      <div
+        class="d-flex flex-wrap justify-content-between mb-4 align-items-center"
+      >
         <!-- Filter Control -->
-        <div class="d-flex align-items-center">
-          <label for="filterType" class="form-label me-3 mb-0">Filter by Type:</label>
-          <select id="filterType" class="form-select form-select-sm" (change)="onFilterChange($event)">
+        <div class="d-flex align-items-center mb-2 mb-md-0">
+          <label
+            for="filterType"
+            class="form-label me-3 mb-0 fw-semibold text-secondary"
+          >
+            <i class="fa fa-filter me-1"></i> Filter by Type:
+          </label>
+          <select
+            id="filterType"
+            class="form-select form-select-sm shadow-sm"
+            (change)="onFilterChange($event)"
+          >
             <option value="all">All</option>
-            <option *ngFor="let type of eventTypes" [value]="type">{{ type }}</option>
+            <option *ngFor="let type of eventTypes" [value]="type">
+              {{ type }}
+            </option>
           </select>
         </div>
 
         <!-- Sort Control -->
         <div class="d-flex align-items-center">
-          <button (click)="onSortChange('nameAsc')" class="btn btn-outline-secondary btn-sm me-2" title="Sort Name Ascending">
+          <button
+            (click)="onSortChange('nameAsc')"
+            class="btn btn-outline-secondary btn-sm me-2"
+            title="Sort Name Ascending"
+          >
             <i class="fa fa-sort-alpha-asc"></i>
           </button>
-          <button (click)="onSortChange('nameDesc')" class="btn btn-outline-secondary btn-sm me-2" title="Sort Name Descending">
+          <button
+            (click)="onSortChange('nameDesc')"
+            class="btn btn-outline-secondary btn-sm me-2"
+            title="Sort Name Descending"
+          >
             <i class="fa fa-sort-alpha-desc"></i>
           </button>
-          <button (click)="onSortChange('dateAsc')" class="btn btn-outline-secondary btn-sm me-2" title="Sort Date Ascending">
+          <button
+            (click)="onSortChange('dateAsc')"
+            class="btn btn-outline-secondary btn-sm me-2"
+            title="Sort Date Ascending"
+          >
             <i class="fa fa-calendar-plus"></i>
           </button>
-          <button (click)="onSortChange('dateDesc')" class="btn btn-outline-secondary btn-sm" title="Sort Date Descending">
+          <button
+            (click)="onSortChange('dateDesc')"
+            class="btn btn-outline-secondary btn-sm"
+            title="Sort Date Descending"
+          >
             <i class="fa fa-calendar-minus"></i>
           </button>
         </div>
       </div>
 
       <!-- Event Cards -->
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-        <div class="col mb-4" *ngFor="let event of paginatedEvents">
-          <div class="card h-100 shadow-sm rounded-lg">
-            <img [src]="event.imageURL" class="card-img-top rounded-top" alt="{{ event.name }}" />
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+        <div class="col" *ngFor="let event of paginatedEvents">
+          <div class="card h-100 shadow-sm border-0">
+            <img
+              [src]="event.imageURL"
+              class="card-img-top rounded-top"
+              alt="{{ event.name }}"
+            />
             <div class="card-body">
-              <h5 class="card-title text-truncate" style="max-width: 200px;">{{ event.name }}</h5>
-              <p class="card-text text-truncate" style="max-height: 60px;">{{ event.desc }}</p>
-              <p class="card-text">
-                <strong>Type:</strong> {{ event.type }} <br />
-                <strong>Location:</strong> {{ event.location }} <br />
-                <strong>Date:</strong> {{ event.doe | date: 'longDate' }} <br />
-                <strong>Organized by:</strong> {{ event.organisedBy }}
+              <h5
+                class="card-title text-truncate fw-bold"
+                title="{{ event.name }}"
+              >
+                {{ event.name }}
+              </h5>
+              <p class="card-text text-truncate" style="max-height: 60px">
+                {{ event.desc }}
               </p>
-              <a (click)="onLinkClicked(event.id)" class="btn btn-primary btn-sm w-100">More Info</a>
+              <p class="card-text small text-muted">
+                <i class="fas fa-tags me-2"></i><strong>Type:</strong>
+                {{ event.type }} <br />
+                <i class="fas fa-map-marker-alt me-2"></i
+                ><strong>Location:</strong> {{ event.location }} <br />
+                <i class="fas fa-calendar-alt me-2"></i><strong>Date:</strong>
+                {{ event.doe | date : "longDate" }} <br />
+                <i class="fas fa-user me-2"></i><strong>Organized by:</strong>
+                {{ event.organisedBy }}
+              </p>
+              <a
+                (click)="onLinkClicked(event.id)"
+                class="btn btn-primary btn-sm w-100"
+                ><i class="fas fa-info-circle me-2"></i>More Info</a
+              >
             </div>
           </div>
         </div>
@@ -54,15 +101,30 @@
       <nav aria-label="Page navigation" class="mt-4">
         <ul class="pagination justify-content-center">
           <li class="page-item" [class.disabled]="currentPage === 1">
-            <a class="page-link" (click)="onPageChange(currentPage - 1)">
+            <a
+              class="page-link"
+              (click)="onPageChange(currentPage - 1)"
+              aria-label="Previous"
+            >
               <i class="fa fa-chevron-left"></i>
             </a>
           </li>
-          <li class="page-item" *ngFor="let page of getTotalPages()" [class.active]="currentPage === page">
+          <li
+            class="page-item"
+            *ngFor="let page of getTotalPages()"
+            [class.active]="currentPage === page"
+          >
             <a class="page-link" (click)="onPageChange(page)">{{ page }}</a>
           </li>
-          <li class="page-item" [class.disabled]="currentPage === getTotalPages().length">
-            <a class="page-link" (click)="onPageChange(currentPage + 1)">
+          <li
+            class="page-item"
+            [class.disabled]="currentPage === getTotalPages().length"
+          >
+            <a
+              class="page-link"
+              (click)="onPageChange(currentPage + 1)"
+              aria-label="Next"
+            >
               <i class="fa fa-chevron-right"></i>
             </a>
           </li>

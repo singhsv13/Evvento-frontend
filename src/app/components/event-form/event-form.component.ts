@@ -121,14 +121,16 @@ export class EventFormComponent implements OnInit {
       this.eventService.editEventDetails(this.eventId, updatedEvent).subscribe({
         next: (success) => {
           if (success) {
-            console.log('Event updated successfully');
+            alert('Event updated successfully');
             this.eventForm.reset();
             this.isEditMode = false; // Reset edit mode
           } else {
+            alert('Failed to update event');
             console.error('Failed to update event');
           }
         },
         error: (err) => {
+          alert(`Error updating event : ${err}`);
           console.error('Error updating event', err);
         },
       });

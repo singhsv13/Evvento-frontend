@@ -1,42 +1,59 @@
 <div class="wrapper">
   <div class="content">
-    <div class="container mt-5" *ngIf="events.length === 0">
-      <h3 class="card-title text-center">Sorry, No Events Subscribed</h3>
+    <!-- No Events Section -->
+    <div class="container mt-5 text-center" *ngIf="events.length === 0">
+      <div class="card border-0 shadow-sm p-4">
+        <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+        <h3 class="card-title">Sorry, No Events Subscribed</h3>
+        <p class="text-muted">You haven’t subscribed to any events yet. Explore and join events now!</p>
+      </div>
     </div>
 
+    <!-- Events Section -->
     <div class="container mt-4" *ngIf="events.length > 0">
-      <div class="row">
-        <div class="col-md-4" *ngFor="let event of paginatedEvents">
-          <div class="card mb-4">
-            <img [src]="event.imageURL" class="card-img-top" alt="{{ event.name }}">
-            <div class="card-body">
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6" *ngFor="let event of paginatedEvents">
+          <div class="card h-100 shadow-sm border-0">
+            <img
+              [src]="event.imageURL"
+              class="card-img-top rounded-top"
+              alt="{{ event.name }}"
+              style="height: 200px; object-fit: cover;"
+            />
+            <div class="card-body d-flex flex-column">
               <h5 class="card-title">{{ event.name }}</h5>
-              <p class="card-text">{{ event.desc.slice(0, 40) + "..." }}</p>
-              <p class="card-text">
-                <strong>Type:</strong> {{ event.type }} <br>
-                <strong>Location:</strong> {{ event.location }} <br>
-                <strong>Date:</strong> {{ event.doe | date: 'longDate' }} <br>
-                <strong>Organized by:</strong> {{ event.organisedBy }}
+              <p class="card-text text-muted">
+                {{ event.desc.slice(0, 40) + '...' }}
               </p>
-              <a (click)="readMoreClicked(event.id)" class="btn btn-primary">More Info</a>
+              <ul class="list-unstyled small text-muted mb-3">
+                <li><i class="fas fa-tags me-2"></i><strong>Type:</strong> {{ event.type }}</li>
+                <li><i class="fas fa-map-marker-alt me-2"></i><strong>Location:</strong> {{ event.location }}</li>
+                <li><i class="fas fa-calendar-alt me-2"></i><strong>Date:</strong> {{ event.doe | date: 'longDate' }}</li>
+                <li><i class="fas fa-user me-2"></i><strong>Organized by:</strong> {{ event.organisedBy }}</li>
+              </ul>
+              <a (click)="readMoreClicked(event.id)" class="btn btn-primary mt-auto">
+                <i class="fas fa-info-circle me-2"></i>More Info
+              </a>
             </div>
           </div>
         </div>
       </div>
-      <nav aria-label="Event pagination" *ngIf="totalPages() > 1">
+
+      <!-- Pagination -->
+      <nav aria-label="Event pagination" *ngIf="totalPages() > 1" class="mt-4">
         <ul class="pagination justify-content-center">
           <li class="page-item" [class.disabled]="currentPage === 1">
             <button class="page-link" (click)="changePage(currentPage - 1)" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
+              <i class="fas fa-chevron-left"></i>
             </button>
           </li>
-          <li *ngFor="let page of [].constructor(totalPages()); let i = index" class="page-item" 
+          <li *ngFor="let page of [].constructor(totalPages()); let i = index" class="page-item"
               [class.active]="currentPage === i + 1">
             <button class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</button>
           </li>
           <li class="page-item" [class.disabled]="currentPage === totalPages()">
             <button class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
+              <i class="fas fa-chevron-right"></i>
             </button>
           </li>
         </ul>

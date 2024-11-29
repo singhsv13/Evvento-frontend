@@ -25,7 +25,7 @@ Evvento is a feature-rich event management application developed using Angular. 
 
 ## Tech Stack
 
-- **Frontend**: Angular, RxJS
+- **Frontend**: Angular, Typescript
 - **Styling**: Bootstrap
 
 ## Installation
