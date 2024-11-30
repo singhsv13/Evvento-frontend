@@ -1,99 +1,67 @@
 
-# Evvento
+# Evvento - Event Manager App  
 
-Evvento is a feature-rich event management application developed using Angular. It enables users to explore, register for, and manage events with various functionalities such as authentication, event filtering, sorting, pagination, and more. The app is designed to offer a seamless user experience for both event organizers and attendees.
+Evvento is a user-friendly event management application built using Angular. It helps users browse and manage events effortlessly with features like authentication, event registration, filtering, sorting, and pagination. The app is styled using Bootstrap for a modern and responsive design.  
 
-## Table of Contents
+## Features  
+- **User Authentication**: Login and logout functionality with a dynamic navigation bar.  
+- **Event Registration**: Register or unregister for events directly from the event details page.  
+- **Dynamic Filtering and Sorting**: Filter and sort events by date or name (ascending/descending).  
+- **Pagination**: Navigate through events, displaying 6 events per page with 3 events per row.  
+- **Edit and Register Modes**: Seamlessly switch between edit and registration modes in forms.  
+- **Pre-filled Forms in Edit Mode**: Automatically load event details when editing an event.  
+- **Dynamic Button Toggle**: Switch between "Register" and "Unregister" buttons based on user status.  
 
-1. [Features](#features)
-2. [Tech Stack](#tech-stack)
-3. [Installation](#installation)
-4. [Usage](#usage)
-5. [Folder Structure](#folder-structure)
-6. [Known Issues](#known-issues)
-7. [Future Enhancements](#future-enhancements)
+## Tech Stack  
+- **Frontend**: Angular  
+- **Styling**: BootStrap  
 
-## Features
+## Installation  
 
-- **User Authentication**: Login and registration functionalities.
-- **Event Registration and Unregistration**: Users can register or unregister from events.
-- **Event Filtering and Sorting**: Filter and sort events by various criteria for ease of browsing.
-- **Pagination**: Display a limited number of events per page in both the home and "My Events" components.
-- **Event Editing**: Allows users to edit event details with pre-populated data when in edit mode.
-- **Responsive UI**: Fully responsive UI designed for an optimized experience across devices.
-- **Event Details**: Detailed view of each event with information fetched dynamically by ID.
+1. Clone the repository:  
+   ```bash  
+   git clone https://github.com/your-username/evvento.git  
+   cd evvento  
+   ```  
 
-## Tech Stack
+2. Install dependencies:  
+   ```bash  
+   npm install  
+   ```  
 
-- **Frontend**: Angular, Typescript
-- **Styling**: Bootstrap
+3. Run the app:  
+   ```bash  
+   ng serve  
+   ```  
 
-## Installation
+4. Open in your browser at `http://localhost:4200`.  
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/your-username/evvento.git
-   cd evvento
-   ```
+## Usage  
 
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
+### Home Component  
+- Displays a list of all available events with filtering, sorting, and pagination options.  
 
-3. **Run the app**:
-   ```bash
-   ng serve
-   ```
-   The app should now be running on `http://localhost:4200/`.
+### My Events Component  
+- Shows all events registered by the user with pagination.  
 
-## Usage
+### Event Details Component  
+- Provides detailed information about an event.  
+- Allows users to register or unregister for events.  
 
-1. **User Registration**: Users can register through the app's registration form.
-2. **Login and Logout**: Login functionality updates the navbar, hiding the login button post-login and displaying a logout option. Logout redirects to the login form.
-3. **Event Browsing**: Navigate to the home component to see a list of events with options for filtering, sorting, and pagination.
-4. **Event Registration**: Select an event and register for it through the event details component. Registered events appear in the "My Events" section.
-5. **Event Editing**: When editing an event, the form is pre-filled with current details, simplifying updates.
-6. **Unregister Event**: Users can also unregister from events within the event details view.
+### Forms  
+- **Registration Form**: Add new events with ease.  
+- **Edit Form**: Update existing events with pre-filled data.  
 
-## Folder Structure
+## Future Enhancements  
+- Add backend integration for persistent data storage.  
+- Implement advanced state management with NgRx.  
 
-```
-src/
-├── app/
-│   ├── components/
-│   │   ├── navbar/
-│   │   ├── home/
-│   │   ├── my-events/
-│   │   ├── event-details/
-│   │   ├── event-form/
-│   ├── services/
-│   │   ├── event.service.ts
-│   │   ├── httpuser.service.ts
-│   ├── models/
-│   ├── guards/
-│   ├── interceptors/
-└── assets/
-```
+## Contributing  
+Contributions are welcome! Please open an issue or submit a pull request for any changes or enhancements.  
 
-- **components**: Contains various components for different parts of the app (home, navbar, event form, etc.).
-- **services**: Contains service files like `event.service.ts` for data management.
-- **models**: Stores TypeScript interfaces and models for strong typing.
-- **guards**: Contains route guards for authentication and authorization.
-- **interceptors**: Includes HTTP interceptors for handling tokens and responses.
+## License  
+This project is licensed under the MIT License.  
 
-## Known Issues
+---  
 
-- **Form Pre-filling Bug**: Occasionally, event details fail to prepopulate in the form during edit mode. Currently investigating code improvements to fix this without affecting other functionalities.
-
-## Future Enhancements
-
-- **Backend Integration**: Add a backend API for data persistence.
-- **Advanced Filtering**: Add date range and location-based filters.
-- **Email Notifications**: Send email notifications upon successful event registration.
-- **Improved Search Functionality**: Implement fuzzy search for better event discovery.
-- **Performance Optimization**: Add lazy loading for components and optimize data handling.
-
-## Contributing
-
-Contributions are welcome! Feel free to submit a pull request with enhancements or bug fixes.
+  
