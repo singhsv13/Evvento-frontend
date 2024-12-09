@@ -67,7 +67,11 @@ footer p {
     margin: 0;
     font-size: 14px;
 } */
-
+.expired {
+    opacity: 0.6;
+    pointer-events: none;
+    background-color: #f0f0f0;
+  }
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 6px;

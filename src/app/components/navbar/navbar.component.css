@@ -1,19 +1,10 @@
-.navbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-  
-  .active {
-    color: darkslategrey;
-    font-weight: 600;
-  }
+.nav-link.active {
+  color: #ffffff !important; /* Highlight active link in primary color */
+  font-weight: bold;
+  /* text-decoration: underline; */
+}
 
-  .navbar-brand {
-    /* color: darkslategrey; */
-    font-weight: bold;
-  }
-  .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-  }
+.nav-link:hover {
+  color: #dfdfdf !important; /* Highlight links on hover */
+  text-decoration: underline;
+}

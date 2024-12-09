@@ -19,6 +19,7 @@ export class EventService {
       doe: '2024-12-15',
       organisedBy: 'Global Business Forum',
       imageURL: 'https://example.com/images/business_summit.jpg',
+      expired: false,
     },
     {
       id: '2',
@@ -29,6 +30,7 @@ export class EventService {
       doe: '2024-12-20',
       organisedBy: 'Cinema Lovers Club',
       imageURL: 'https://example.com/images/movie_marathon.jpg',
+      expired: false,
     },
     {
       id: '3',
@@ -39,6 +41,7 @@ export class EventService {
       doe: '2024-11-30',
       organisedBy: 'Austin Green Team',
       imageURL: 'https://example.com/images/community_cleanup.jpg',
+      expired: false,
     },
     {
       id: '4',
@@ -49,6 +52,7 @@ export class EventService {
       doe: '2024-12-10',
       organisedBy: 'Tech Corp',
       imageURL: 'https://example.com/images/employee_awards.jpg',
+      expired: false,
     },
     {
       id: '5',
@@ -59,6 +63,7 @@ export class EventService {
       doe: '2024-12-05',
       organisedBy: 'World Foodie Events',
       imageURL: 'https://example.com/images/cuisine_festival.jpg',
+      expired: false,
     },
     {
       id: '6',
@@ -69,6 +74,7 @@ export class EventService {
       doe: '2024-12-18',
       organisedBy: 'Investor Hub',
       imageURL: 'https://example.com/images/pitch_night.jpg',
+      expired: false,
     },
     {
       id: '7',
@@ -79,6 +85,7 @@ export class EventService {
       doe: '2024-12-12',
       organisedBy: 'Charity Beats',
       imageURL: 'https://example.com/images/charity_concert.jpg',
+      expired: false,
     },
     {
       id: '8',
@@ -89,6 +96,7 @@ export class EventService {
       doe: '2024-11-28',
       organisedBy: 'Boston Community Group',
       imageURL: 'https://example.com/images/potluck.jpg',
+      expired: false,
     },
     {
       id: '9',
@@ -99,6 +107,7 @@ export class EventService {
       doe: '2024-12-22',
       organisedBy: 'Excellence Forum',
       imageURL: 'https://example.com/images/leadership_awards.jpg',
+      expired: false,
     },
     {
       id: '10',
@@ -109,6 +118,7 @@ export class EventService {
       doe: '2024-12-02',
       organisedBy: 'Art Lovers Society',
       imageURL: 'https://example.com/images/art_workshop.jpg',
+      expired: false,
     },
     {
       id: '11',
@@ -119,6 +129,7 @@ export class EventService {
       doe: '2024-12-08',
       organisedBy: 'Ecom Gurus',
       imageURL: 'https://example.com/images/ecommerce_workshop.jpg',
+      expired: false,
     },
     {
       id: '12',
@@ -129,6 +140,7 @@ export class EventService {
       doe: '2024-12-14',
       organisedBy: 'Jazz Club',
       imageURL: 'https://example.com/images/jazz_evening.jpg',
+      expired: false,
     },
     {
       id: '13',
@@ -139,6 +151,7 @@ export class EventService {
       doe: '2024-11-25',
       organisedBy: 'Helping Hands',
       imageURL: 'https://example.com/images/food_drive.jpg',
+      expired: false,
     },
     {
       id: '14',
@@ -149,6 +162,7 @@ export class EventService {
       doe: '2024-12-17',
       organisedBy: 'Innovation Hub',
       imageURL: 'https://example.com/images/startup_awards.jpg',
+      expired: false,
     },
     {
       id: '15',
@@ -159,6 +173,7 @@ export class EventService {
       doe: '2024-12-01',
       organisedBy: 'Readers Paradise',
       imageURL: 'https://example.com/images/book_fair.jpg',
+      expired: false,
     },
     {
       id: '16',
@@ -169,6 +184,7 @@ export class EventService {
       doe: '2024-12-09',
       organisedBy: 'EmpowerHer',
       imageURL: 'https://example.com/images/empowerment_conference.jpg',
+      expired: false,
     },
     {
       id: '17',
@@ -179,6 +195,7 @@ export class EventService {
       doe: '2024-12-13',
       organisedBy: 'Rock United',
       imageURL: 'https://example.com/images/rock_festival.jpg',
+      expired: false,
     },
     {
       id: '18',
@@ -189,6 +206,7 @@ export class EventService {
       doe: '2024-12-06',
       organisedBy: 'Orators Hub',
       imageURL: 'https://example.com/images/speaking_workshop.jpg',
+      expired: false,
     },
     {
       id: '19',
@@ -199,6 +217,7 @@ export class EventService {
       doe: '2024-12-19',
       organisedBy: 'FutureTech',
       imageURL: 'https://example.com/images/science_awards.jpg',
+      expired: false,
     },
     {
       id: '20',
@@ -209,6 +228,7 @@ export class EventService {
       doe: '2024-12-07',
       organisedBy: 'Sacramento Farmers Association',
       imageURL: 'https://example.com/images/farmers_market.jpg',
+      expired: false,
     },
   ];
 
@@ -219,21 +239,37 @@ export class EventService {
 
   addNewEvent(event: Event) {
     console.log('added event : ', event);
+    event.expired = false;
     this.eventList.push(event);
   }
 
   getEventByID(id: string): Observable<Event> {
-    // return this.eventList.find((event) => event.id === id)
     const event = this.eventList.find((event) => event.id === id);
+    if (event) {
+      this.checkAndMarkExpired(event);
+    }
     return of(event);
   }
 
   getAllEvents(): Event[] {
+    this.eventList.forEach((event) => this.checkAndMarkExpired(event));
     return this.eventList;
   }
 
   getAllEventsObservable(): Observable<Event[]> {
+    this.eventList.forEach((event) => this.checkAndMarkExpired(event));
     return of(this.eventList).pipe(delay(1000)); 
+  }
+
+  private checkAndMarkExpired(event: Event): void {
+    const eventDate = new Date(event.doe);
+    const currentDate = new Date();
+
+    if (eventDate < currentDate) {
+      event.expired = true;
+    } else {
+      event.expired = false;
+    }
   }
 
   registerForEvent(eventId: string): Observable<boolean> {
@@ -325,3 +361,4 @@ export class EventService {
     }
   }
 }
+

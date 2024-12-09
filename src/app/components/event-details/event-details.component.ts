@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { EventService } from 'src/app/services/event.service';
 import { Event } from 'src/app/model/Event';
 import { ActivatedRoute, Router } from '@angular/router';
-import { error } from 'console';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -12,7 +11,6 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class EventDetailsComponent implements OnInit {
   id: string;
-
   event: Event = {
     id: '',
     name: '',
@@ -22,10 +20,9 @@ export class EventDetailsComponent implements OnInit {
     doe: '',
     organisedBy: '',
     imageURL: '',
+    expired: false,
   };
-
   loginStatus: boolean = false;
-  // editMode : boolean = false;
 
   constructor(
     private eventService: EventService,
@@ -35,27 +32,32 @@ export class EventDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    let eventId = '';
-    this.route.params.subscribe((params) => {
-      this.id = params['id']; 
-      eventId = this.id;
-      console.log(this.id);
+    this.route.params.subscribe({
+      next: (params) => {
+        this.id = params['id'];
+        if (this.id) {
+          this.fetchEventById(this.id);
+        }
+      },
+      error: (err) => {
+        console.error('Error retrieving route parameters:', err);
+      },
     });
-
-    this.fetchEventById(eventId);
-    // this.event = {...this.eventService.getEventByID(this.id)};
-    console.log('Fetched Event : ', this.event);
   }
 
   fetchEventById(id: string) {
     this.eventService.getEventByID(id).subscribe({
       next: (data) => {
-        console.log(data);
-        this.event = { ...data };
-        console.log('My Event : ', this.event);
+        if (data) {
+          this.event = { ...data };
+          console.log('Event fetched:', this.event);
+        } else {
+          console.error('Event data is empty');
+        }
       },
       error: (err) => {
-        console.log(err);
+        console.error('Error fetching event details:', err);
+        alert('Error fetching event details. Please try again later.');
       },
     });
   }
@@ -64,57 +66,73 @@ export class EventDetailsComponent implements OnInit {
     this.loginStatus = this.authService.isAuthenticated();
 
     if (this.loginStatus) {
-      this.eventService.registerForEvent(eventId).subscribe((isRegistered) => {
-        if (isRegistered) {
-          alert('You have successfully registered for the event!');
-          this.router.navigate(['my-events']);
-        } else {
-          alert('You are already registered for this event!');
-        }
+      this.eventService.registerForEvent(eventId).subscribe({
+        next: (isRegistered) => {
+          if (isRegistered) {
+            alert('You have successfully registered for the event!');
+            this.router.navigate(['my-events']);
+          } else {
+            alert('You are already registered for this event!');
+          }
+        },
+        error: (err) => {
+          console.error('Registration failed:', err);
+          alert('Something went wrong while trying to register.');
+        },
       });
     } else {
-      alert('Please Login to Register!!!');
+      alert('Please log in to register!');
       this.router.navigate(['login']);
-      
     }
-  }
-
-
-  onEditClicked(id: string) {
-    this.router.navigate([`/event/edit`, id], { 
-      queryParams: { edit: true }
-    });
-  }
-  
-  onDeleteClicked(id: string) {
-    this.eventService.deleteEvent(id).subscribe({
-      next: (updatedEventList) => {
-        alert(`Event with ID ${id} successfully deleted!`);
-        this.router.navigate(['/home']); // Redirect to home or relevant page
-      },
-      error: (err) => {
-        console.error(`Error deleting event with ID ${id}:`, err);
-      }
-    });
   }
 
   onUnregisterClicked(eventId: string) {
     this.loginStatus = this.authService.isAuthenticated();
-  
+
     if (this.loginStatus) {
-      this.eventService.unRegisterEvent(eventId).subscribe((isUnregistered) => {
-        if (isUnregistered) {
-          alert('You have successfully unregistered from the event.');
-          this.router.navigate(['my-events']);
-        } else {
-          alert('You were not registered for this event.');
-        }
+      this.eventService.unRegisterEvent(eventId).subscribe({
+        next: (isUnregistered) => {
+          if (isUnregistered) {
+            alert('You have successfully unregistered from the event.');
+            this.router.navigate(['my-events']);
+          } else {
+            alert('You were not registered for this event.');
+          }
+        },
+        error: (err) => {
+          console.error('Unregistration failed:', err);
+          alert('Something went wrong while trying to unregister.');
+        },
       });
     } else {
-      alert('Please login to unregister.');
+      alert('Please log in to unregister!');
       this.router.navigate(['login']);
     }
   }
-  
+
+  onEditClicked(id: string) {
+    this.router.navigate([`/event/edit`, id], {
+      queryParams: { edit: true },
+    });
+  }
+
+  onDeleteClicked(id: string) {
+    this.eventService.deleteEvent(id).subscribe({
+      next: () => {
+        alert(`Event with ID ${id} successfully deleted!`);
+        this.router.navigate(['/home']);
+      },
+      error: (err) => {
+        console.error('Error deleting event:', err);
+        alert('Could not delete event. Please try again later.');
+      },
+    });
+  }
+
+  isEventExpired(): boolean {
+    const currentDate = new Date();
+    const eventDate = new Date(this.event.doe);
+    return eventDate < currentDate;
+  }
 
 }

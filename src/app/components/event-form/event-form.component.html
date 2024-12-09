@@ -34,6 +34,7 @@
             (ngSubmit)="onFormSubmit()"
             #regForm="ngForm"
             class="needs-validation"
+            novalidate
           >
             <!-- Event Name -->
             <div class="mb-3">
@@ -44,9 +45,9 @@
                 id="name"
                 placeholder="Enter event name"
                 name="eventName"
-                required
                 ngModel
                 #eventName="ngModel"
+                required
               />
               <div *ngIf="eventName.invalid && eventName.touched" class="text-danger">
                 <small>*Invalid event name</small>
@@ -62,9 +63,9 @@
                 rows="2"
                 placeholder="Event description (min 10 characters)"
                 name="eventDesc"
-                required
                 ngModel
                 #eventDesc="ngModel"
+                required
                 minlength="10"
               ></textarea>
               <div *ngIf="eventDesc.invalid && eventDesc.touched" class="text-danger">
@@ -79,11 +80,11 @@
                 class="form-select"
                 id="type"
                 name="eventType"
-                required
                 ngModel
                 #eventType="ngModel"
+                required
               >
-                <option value="" disabled selected>Select type</option>
+                <option value="" disabled>Select type</option>
                 <option *ngFor="let type of eventTypes" [value]="type">
                   {{ type }}
                 </option>
@@ -119,9 +120,9 @@
                 class="form-control"
                 id="doe"
                 name="eventDate"
-                required
                 ngModel
                 #doe="ngModel"
+                required
               />
               <div *ngIf="doe.invalid && doe.touched" class="text-danger">
                 <small>*Enter a valid date</small>

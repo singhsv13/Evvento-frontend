@@ -87,6 +87,10 @@
                 <i class="fas fa-user me-2"></i><strong>Organized by:</strong>
                 {{ event.organisedBy }}
               </p>
+              <!-- Expired Badge -->
+              <div *ngIf="event.expired" class="mb-2">
+                <span class="badge bg-danger">Expired</span>
+              </div>
               <a
                 (click)="onLinkClicked(event.id)"
                 class="btn btn-primary btn-sm w-100"

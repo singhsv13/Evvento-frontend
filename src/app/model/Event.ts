@@ -7,4 +7,5 @@ export class Event {
     doe : string;
     organisedBy : string;
     imageURL : string;
+    expired: boolean;
 }
