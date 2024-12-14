@@ -8,4 +8,5 @@ export class Event {
     organisedBy : string;
     imageURL : string;
     expired: boolean;
+    isRegistered?: boolean;
 }

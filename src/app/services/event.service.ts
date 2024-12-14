@@ -245,10 +245,11 @@ export class EventService {
 
   getEventByID(id: string): Observable<Event> {
     const event = this.eventList.find((event) => event.id === id);
-    if (event) {
-      this.checkAndMarkExpired(event);
-    }
-    return of(event);
+  if (event) {
+    this.checkAndMarkExpired(event);
+    event['isRegistered'] = this.isUserRegisteredForEvent(id); // Add the flag
+  }
+  return of(event);
   }
 
   getAllEvents(): Event[] {
@@ -257,7 +258,10 @@ export class EventService {
   }
 
   getAllEventsObservable(): Observable<Event[]> {
-    this.eventList.forEach((event) => this.checkAndMarkExpired(event));
+    this.eventList.forEach((event) => {
+      this.checkAndMarkExpired(event);
+      event['isRegistered'] = this.isUserRegisteredForEvent(event.id); // Add the flag
+    });
     return of(this.eventList).pipe(delay(1000)); 
   }
 
@@ -360,5 +364,14 @@ export class EventService {
       return of(false);
     }
   }
+
+  isUserRegisteredForEvent(eventId: string): boolean {
+    this.activeUser = this.authService.getActiveUser();
+    if (this.activeUser && this.activeUser.regEvents) {
+      return this.activeUser.regEvents.some((event) => event.id === eventId);
+    }
+    return false;
+  }
+
 }
 
