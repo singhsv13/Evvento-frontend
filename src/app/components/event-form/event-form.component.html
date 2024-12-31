@@ -3,7 +3,7 @@
     <div class="container mt-4 mb-4">
       <div
         class="card mx-auto shadow-lg"
-        style="max-width: 500px; border-radius: 12px;"
+        style="max-width: 500px; border-radius: 12px"
         [ngClass]="{
           'form-edit-mode': isEditMode,
           'form-register-mode': !isEditMode
@@ -24,7 +24,7 @@
               [ngClass]="isEditMode ? 'fa-pencil-square-o' : 'fa-plus-circle'"
               aria-hidden="true"
             ></i>
-            {{ isEditMode ? 'Edit Event' : 'Register Event' }}
+            {{ isEditMode ? "Edit Event" : "Register Event" }}
           </h5>
         </div>
 
@@ -38,7 +38,9 @@
           >
             <!-- Event Name -->
             <div class="mb-3">
-              <label for="name" class="form-label small text-muted">Event Name</label>
+              <label for="name" class="form-label small text-muted"
+                >Event Name</label
+              >
               <input
                 type="text"
                 class="form-control"
@@ -49,14 +51,19 @@
                 #eventName="ngModel"
                 required
               />
-              <div *ngIf="eventName.invalid && eventName.touched" class="text-danger">
+              <div
+                *ngIf="eventName.invalid && eventName.touched"
+                class="text-danger"
+              >
                 <small>*Invalid event name</small>
               </div>
             </div>
 
             <!-- Description -->
             <div class="mb-3">
-              <label for="desc" class="form-label small text-muted">Description</label>
+              <label for="desc" class="form-label small text-muted"
+                >Description</label
+              >
               <textarea
                 class="form-control"
                 id="desc"
@@ -68,14 +75,19 @@
                 required
                 minlength="10"
               ></textarea>
-              <div *ngIf="eventDesc.invalid && eventDesc.touched" class="text-danger">
+              <div
+                *ngIf="eventDesc.invalid && eventDesc.touched"
+                class="text-danger"
+              >
                 <small>*Enter a valid description</small>
               </div>
             </div>
 
             <!-- Event Type -->
             <div class="mb-3">
-              <label for="type" class="form-label small text-muted">Event Type</label>
+              <label for="type" class="form-label small text-muted"
+                >Event Type</label
+              >
               <select
                 class="form-select"
                 id="type"
@@ -89,14 +101,19 @@
                   {{ type }}
                 </option>
               </select>
-              <div *ngIf="eventType.invalid && eventType.touched" class="text-danger">
+              <div
+                *ngIf="eventType.invalid && eventType.touched"
+                class="text-danger"
+              >
                 <small>*Select a valid event type</small>
               </div>
             </div>
 
             <!-- Location -->
             <div class="mb-3">
-              <label for="location" class="form-label small text-muted">Location</label>
+              <label for="location" class="form-label small text-muted"
+                >Location</label
+              >
               <input
                 type="text"
                 class="form-control"
@@ -107,14 +124,19 @@
                 #eventLoc="ngModel"
                 required
               />
-              <div *ngIf="eventLoc.invalid && eventLoc.touched" class="text-danger">
+              <div
+                *ngIf="eventLoc.invalid && eventLoc.touched"
+                class="text-danger"
+              >
                 <small>*Enter a valid location</small>
               </div>
             </div>
 
             <!-- Date of Event -->
             <div class="mb-3">
-              <label for="doe" class="form-label small text-muted">Date of Event</label>
+              <label for="doe" class="form-label small text-muted"
+                >Date of Event</label
+              >
               <input
                 type="date"
                 class="form-control"
@@ -123,15 +145,21 @@
                 ngModel
                 #doe="ngModel"
                 required
+                appFutureDate
               />
               <div *ngIf="doe.invalid && doe.touched" class="text-danger">
                 <small>*Enter a valid date</small>
+              </div>
+              <div *ngIf="doe?.errors?.['invalidDate']" class="text-danger">
+                <small> *The date cannot be in the past. </small>
               </div>
             </div>
 
             <!-- Organized By -->
             <div class="mb-3">
-              <label for="organisedBy" class="form-label small text-muted">Organized By</label>
+              <label for="organisedBy" class="form-label small text-muted"
+                >Organized By</label
+              >
               <input
                 type="text"
                 class="form-control"
@@ -142,14 +170,19 @@
                 #organiser="ngModel"
                 required
               />
-              <div *ngIf="organiser.invalid && organiser.touched" class="text-danger">
+              <div
+                *ngIf="organiser.invalid && organiser.touched"
+                class="text-danger"
+              >
                 <small>*Enter a valid organizer</small>
               </div>
             </div>
 
             <!-- Image URL -->
             <div class="mb-3">
-              <label for="image" class="form-label small text-muted">Event Image URL</label>
+              <label for="image" class="form-label small text-muted"
+                >Event Image URL</label
+              >
               <input
                 type="text"
                 class="form-control"
@@ -176,7 +209,7 @@
                 }"
                 [disabled]="regForm.invalid"
               >
-                {{ isEditMode ? 'Update Event' : 'Register Event' }}
+                {{ isEditMode ? "Update Event" : "Register Event" }}
               </button>
             </div>
           </form>

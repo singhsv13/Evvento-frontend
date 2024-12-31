@@ -72,6 +72,15 @@
                         <i class="fas fa-sign-in-alt me-2"></i>Login
                       </button>
                     </div>
+                    <div class="text-center mt-2">
+                      <a 
+                        href="#" 
+                        class="text-primary text-decoration-none forgot-password" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#forgotPasswordModal">
+                        Forgot Password?
+                      </a>
+                    </div>
                   </form>
                 </div>
 
@@ -111,9 +120,22 @@
                         type="password" 
                         class="form-control" 
                         id="registerPassword" 
-                        placeholder="Enter your password" 
+                        placeholder="Enter password" 
                         formControlName="password">
                       <small *ngIf="registerForm.get('password').invalid && registerForm.get('password').touched" class="text-danger">*Password is required</small>
+                    </div>
+                    <div class="mb-3">
+                      <label for="confirmRegisterPassword" class="form-label">
+                        <i class="fas fa-lock me-2"></i>Confirm Password
+                      </label>
+                      <input 
+                        type="password" 
+                        class="form-control" 
+                        id="confirmRegisterPassword" 
+                        placeholder="Confirm password" 
+                        formControlName="confirmPassword">
+                        <small *ngIf="registerForm.get('confirmPassword').invalid && registerForm.get('confirmPassword').touched" class="text-danger">*Confirm Password is required</small>
+                        <small *ngIf="registerForm.errors?.['passwordsMismatch'] && registerForm.get('confirmPassword').touched" class="text-danger">*Passwords do not match</small>
                     </div>
                     <div class="d-grid">
                       <button type="submit" class="btn btn-success btn-block">

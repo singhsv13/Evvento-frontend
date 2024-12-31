@@ -1,98 +1,3 @@
-// import { Component, OnInit } from '@angular/core';
-// import { ActivatedRoute, Router } from '@angular/router';
-// import { Event } from 'src/app/model/Event';
-// import { EventService } from 'src/app/services/event.service';
-
-// @Component({
-//   selector: 'app-home',
-//   templateUrl: './home.component.html',
-//   styleUrls: ['./home.component.css']
-// })
-// export class HomeComponent implements OnInit {
-//   events: Event[] = [];
-//   activeEvents: Event[] = [];
-//   expiredEvents: Event[] = [];
-//   currentPage: number = 1;
-//   itemsPerPage: number = 6;
-//   paginatedEvents: Event[] = [];
-//   totalPages: number = 0;
-  
-//   sortDirection: 'nameAsc' | 'nameDesc' | 'dateAsc' | 'dateDesc' = 'nameAsc';
-
-
-//   eventTypes: string[] = [
-//     'Business & Professional',
-//     'Entertainment & Leisure',
-//     'Social & Community',
-//     'Awards & Recognition',
-//     'Various'
-//   ];
-  
-//   filterType: string = 'all';
-//   // sortDirection: 'asc' | 'desc' = 'asc';
-
-//   constructor(private router: Router, private route: ActivatedRoute, private eventService: EventService) { }
-
-//   ngOnInit(): void {
-//     this.route.data.subscribe((data) => {
-//       this.events = data['events']; 
-//       this.updatePaginatedEvents();
-//     });
-//   }
-
-
-//   onFilterChange(event: any): void {
-//     this.filterType = event.target.value;
-//     this.currentPage = 1; // Reset to first page when filter changes
-//     this.updatePaginatedEvents();
-//   }
-
-//   onSortChange(direction: 'nameAsc' | 'nameDesc' | 'dateAsc' | 'dateDesc'): void {
-//     this.sortDirection = direction;
-//     this.updatePaginatedEvents();
-//   }
-  
-//   updatePaginatedEvents(): void {
-//     let filteredAndSortedEvents = this.events;
-  
-//     if (this.filterType !== 'all') {
-//       filteredAndSortedEvents = filteredAndSortedEvents.filter(event => event.type === this.filterType);
-//     }
-  
-//     filteredAndSortedEvents = filteredAndSortedEvents.sort((a, b) => {
-//       switch (this.sortDirection) {
-//         case 'nameAsc':
-//           return a.name.localeCompare(b.name);
-//         case 'nameDesc':
-//           return b.name.localeCompare(a.name);
-//         case 'dateAsc':
-//           return new Date(a.doe).getTime() - new Date(b.doe).getTime();
-//         case 'dateDesc':
-//           return new Date(b.doe).getTime() - new Date(a.doe).getTime();
-//         default:
-//           return 0;
-//       }
-//     });
-    
-//     this.totalPages = Math.ceil(filteredAndSortedEvents.length / this.itemsPerPage);
-//     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-//     const endIndex = startIndex + this.itemsPerPage;
-//     this.paginatedEvents = filteredAndSortedEvents.slice(startIndex, endIndex);
-//   }
-
-//   onPageChange(page: number): void {
-//     this.currentPage = page;
-//     this.updatePaginatedEvents();
-//   }
-
-//   getTotalPages(): number[] {
-//     return Array.from({ length: this.totalPages }, (_, index) => index + 1);
-//   }
-
-//   onLinkClicked(id: string): void {
-//     this.router.navigate(['event', id]);
-//   }
-// }
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Event } from 'src/app/model/Event';
@@ -101,7 +6,7 @@ import { EventService } from 'src/app/services/event.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
   events: Event[] = [];
@@ -110,40 +15,39 @@ export class HomeComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 6;
   paginatedEvents: Event[] = [];
-  totalPages: number = 0;
+
+  isLoading : boolean = true;
 
   sortDirection: 'nameAsc' | 'nameDesc' | 'dateAsc' | 'dateDesc' = 'nameAsc';
 
-  eventTypes: string[] = [
-    'Business & Professional',
-    'Entertainment & Leisure',
-    'Social & Community',
-    'Awards & Recognition',
-    'Various'
-  ];
+  eventTypes = this.eventService.getEventTypes();
 
   filterType: string = 'all';
+  totalPages: number = 0;
 
-  constructor(private router: Router, private route: ActivatedRoute, private eventService: EventService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private eventService: EventService) {}
 
   ngOnInit(): void {
-    this.route.data.subscribe((data) => {
-      this.events = data['events'];
-      this.updateEventLists();
-      this.updatePaginatedEvents();
-    });
+    //getting data via resolve guard
+    setTimeout(() => {
+      this.isLoading = false; // Set to false after loading is complete
+      this.route.data.subscribe((data) => {
+        this.events = data['events'];
+        this.updateEventLists();
+        this.updatePaginatedEvents();
+      });
+    }, 1000); // Adjust time as per the actual loading process
+    
   }
 
   updateEventLists(): void {
-    // Update expired and active events lists
-    this.expiredEvents = this.events.filter(event => event.expired);
-    this.activeEvents = this.events.filter(event => !event.expired);
+    this.expiredEvents = this.events.filter((event) => event.expired);
+    this.activeEvents = this.events.filter((event) => !event.expired);
   }
 
-  onFilterChange(event: any): void {
-    this.filterType = event.target.value;
-    this.currentPage = 1; // Reset to first page when filter changes
-    this.updatePaginatedEvents();
+  onFilterChange(filter: string): void {
+    this.filterType = filter;
+    this.updatePaginatedEvents(); // Update events based on filter
   }
 
   onSortChange(direction: 'nameAsc' | 'nameDesc' | 'dateAsc' | 'dateDesc'): void {
@@ -155,7 +59,7 @@ export class HomeComponent implements OnInit {
     let filteredAndSortedEvents = this.events;
 
     if (this.filterType !== 'all') {
-      filteredAndSortedEvents = filteredAndSortedEvents.filter(event => event.type === this.filterType);
+      filteredAndSortedEvents = filteredAndSortedEvents.filter((event) => event.type === this.filterType);
     }
 
     filteredAndSortedEvents = filteredAndSortedEvents.sort((a, b) => {
@@ -175,17 +79,12 @@ export class HomeComponent implements OnInit {
 
     this.totalPages = Math.ceil(filteredAndSortedEvents.length / this.itemsPerPage);
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedEvents = filteredAndSortedEvents.slice(startIndex, endIndex);
+    this.paginatedEvents = filteredAndSortedEvents.slice(startIndex, startIndex + this.itemsPerPage);
   }
 
   onPageChange(page: number): void {
     this.currentPage = page;
     this.updatePaginatedEvents();
-  }
-
-  getTotalPages(): number[] {
-    return Array.from({ length: this.totalPages }, (_, index) => index + 1);
   }
 
   onLinkClicked(id: string): void {

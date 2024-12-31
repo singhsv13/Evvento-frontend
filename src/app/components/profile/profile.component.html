@@ -1,6 +1,7 @@
+<!-- Profile Component (Intact) -->
 <div class="wrapper">
   <div class="content">
-    <div class="container mt-5">
+    <div class="container py-5">
       <div class="row g-4">
         <!-- User Info Card -->
         <div class="col-lg-4">
@@ -9,16 +10,24 @@
               <div class="avatar mb-3">
                 <i class="fas fa-user-circle fa-4x"></i>
               </div>
-              <h5 class="mb-0">{{ user?.name || 'User' }}</h5>
+              <h5 class="mb-1">{{ user?.name || 'User' }}</h5>
               <p class="text-light small mb-0">{{ user?.email }}</p>
             </div>
             <div class="card-body text-center">
               <p class="text-muted mb-2">
-                <i class="fas fa-id-badge me-3"></i><strong>User ID:</strong> {{ user?.id }}
+                <i class="fas fa-id-badge me-2"></i><strong>User ID:</strong> {{ user?.id }}
               </p>
-              <button class="btn btn-outline-danger btn-md mt-3 px-4" (click)="logout()">
-                <i class="fas fa-sign-out-alt me-2"></i>Log Out
-              </button>
+              <div class="d-grid gap-2">
+                <button class="btn btn-outline-primary btn-sm" (click)="toggleEditProfile()">
+                  <i class="fas fa-edit me-2"></i>Edit Profile
+                </button>
+                <button class="btn btn-outline-danger btn-sm" (click)="deleteProfile()">
+                  <i class="fas fa-trash-alt me-2"></i>Delete Profile
+                </button>
+                <button class="btn btn-outline-secondary btn-sm" (click)="logout()">
+                  <i class="fas fa-sign-out-alt me-2"></i>Log Out
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -41,18 +50,18 @@
                     <img
                       [src]="event.imageURL"
                       alt="Event Image"
-                      class="rounded-circle"
-                      style="width: 60px; height: 60px; object-fit: cover; margin-right: 15px;"
+                      class="rounded-circle me-3"
+                      style="width: 60px; height: 60px; object-fit: cover;"
                     />
                     <div class="flex-grow-1">
-                      <h6 class="mb-0">{{ event.name }}</h6>
+                      <h6 class="mb-1">{{ event.name }}</h6>
                       <p class="mb-0 text-muted small">
                         <i class="fas fa-map-marker-alt me-1"></i>{{ event.location }}
                       </p>
                     </div>
                     <a
                       [routerLink]="['/event', event.id]"
-                      class="btn btn-sm btn-outline-secondary"
+                      class="btn btn-sm btn-outline-primary"
                       title="View Details"
                     >
                       <i class="fas fa-arrow-right"></i>
@@ -73,3 +82,64 @@
     </div>
   </div>
 </div>
+
+<div *ngIf="showModal" class="modal fade show" style="display: block;" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+  <!-- Backdrop (dimmed background) -->
+  <div class="modal-backdrop fade show"></div>
+
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-3 shadow-lg border-0">
+      <div class="modal-header border-0">
+        <h5 class="modal-title text-muted" id="editProfileModalLabel">Edit Profile</h5>
+        <button type="button" class="btn-close" (click)="toggleEditProfile()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Profile Edit Form -->
+        <form #profileForm="ngForm" (ngSubmit)="saveProfileChanges(profileForm)">
+          <div class="mb-3">
+            <label for="name" class="form-label text-muted">Name</label>
+            <div class="input-group">
+              <i class="fas fa-user-circle input-group-text"></i>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                [(ngModel)]="user.name"
+                required
+                placeholder="Enter your name"
+              />
+            </div>
+            <div *ngIf="profileForm.submitted && !profileForm.controls['name']?.valid" class="text-danger">
+              Name is required.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label text-muted">Email</label>
+            <div class="input-group">
+              <i class="fas fa-envelope input-group-text"></i>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                [(ngModel)]="user.email"
+                required
+                placeholder="Enter your email"
+              />
+            </div>
+            <div *ngIf="profileForm.submitted && !profileForm.controls['email']?.valid" class="text-danger">
+              Valid email is required.
+            </div>
+          </div>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-secondary" (click)="toggleEditProfile()">Close</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!profileForm.valid">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+

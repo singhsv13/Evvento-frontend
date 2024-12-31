@@ -1,11 +1,10 @@
 <div class="wrapper bg-light py-5">
   <div class="container my-5 px-3">
     <div class="row justify-content-center">
+      
       <!-- Event Card -->
-      <div
-        class="col-lg-8 col-md-10 col-sm-12 bg-white rounded shadow-lg p-5 position-relative mx-auto"
-        style="margin: 20px"
-      >
+      <div class="col-lg-8 col-md-10 col-sm-12 bg-white rounded shadow-lg p-5 position-relative mx-auto" style="margin: 20px;">
+        
         <!-- Back Button -->
         <div class="position-relative mb-4">
           <button
@@ -24,12 +23,7 @@
             [src]="event.imageURL"
             class="img-fluid rounded shadow"
             [alt]="event.name"
-            style="
-              max-height: 350px;
-              object-fit: cover;
-              width: 100%;
-              border: 3px solid #f8f9fa;
-            "
+            style="max-height: 350px; object-fit: cover; width: 100%; border: 3px solid #f8f9fa;"
           />
         </div>
 
@@ -37,10 +31,7 @@
         <h2 class="text-center text-dark fw-bold mb-3">{{ event.name }}</h2>
 
         <!-- Event Description -->
-        <p
-          class="text-muted text-center mb-4 px-3"
-          style="font-size: 1.1rem; line-height: 1.6"
-        >
+        <p class="text-muted text-center mb-4 px-3" style="font-size: 1.1rem; line-height: 1.6;">
           {{ event.desc }}
         </p>
 
@@ -49,23 +40,19 @@
           <ul class="list-unstyled fs-6">
             <li class="mb-3 d-flex align-items-center">
               <i class="fas fa-tag text-primary me-3 fs-5"></i>
-              <strong class="text-secondary">Type:</strong
-              ><span class="ms-2">{{ event.type }}</span>
+              <strong class="text-secondary">Type:</strong><span class="ms-2">{{ event.type }}</span>
             </li>
             <li class="mb-3 d-flex align-items-center">
               <i class="fas fa-map-marker-alt text-danger me-3 fs-5"></i>
-              <strong class="text-secondary">Location:</strong
-              ><span class="ms-2">{{ event.location }}</span>
+              <strong class="text-secondary">Location:</strong><span class="ms-2">{{ event.location }}</span>
             </li>
             <li class="mb-3 d-flex align-items-center">
               <i class="fas fa-calendar-alt text-success me-3 fs-5"></i>
-              <strong class="text-secondary">Date:</strong
-              ><span class="ms-2">{{ event.doe }}</span>
+              <strong class="text-secondary">Date:</strong><span class="ms-2">{{ event.doe }}</span>
             </li>
             <li class="mb-3 d-flex align-items-center">
               <i class="fas fa-user-circle text-info me-3 fs-5"></i>
-              <strong class="text-secondary">Organized By:</strong
-              ><span class="ms-2">{{ event.organisedBy }}</span>
+              <strong class="text-secondary">Organized By:</strong><span class="ms-2">{{ event.organisedBy }}</span>
             </li>
           </ul>
         </div>
@@ -92,7 +79,6 @@
           >
             <i class="fas fa-user-minus me-2"></i> Unregister
           </button>
-
           <button
             type="button"
             class="btn btn-primary px-4 py-2 shadow"
@@ -109,12 +95,21 @@
           >
             <i class="fas fa-trash me-2"></i> Delete
           </button>
+          <!-- <button
+            type="button"
+            class="btn btn-warning px-4 py-2 text-white shadow"
+            [disabled]="isEventExpired()"
+            (click)="onUnregisterClicked(event.id)"
+          >
+            <i class="fas fa-user-minus me-2"></i> Unregister
+          </button> -->
         </div>
 
         <!-- Expired Notice -->
         <div *ngIf="isEventExpired()" class="text-center mt-3 text-danger">
           This event has expired.
         </div>
+
       </div>
     </div>
   </div>

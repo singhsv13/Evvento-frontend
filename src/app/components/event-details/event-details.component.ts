@@ -3,6 +3,7 @@ import { EventService } from 'src/app/services/event.service';
 import { Event } from 'src/app/model/Event';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { DialogueService } from 'src/app/services/dialogue.service';
 
 @Component({
   selector: 'app-event-details',
@@ -28,7 +29,8 @@ export class EventDetailsComponent implements OnInit {
     private eventService: EventService,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private dialogueService: DialogueService
   ) {}
 
   ngOnInit(): void {
@@ -50,14 +52,13 @@ export class EventDetailsComponent implements OnInit {
       next: (data) => {
         if (data) {
           this.event = { ...data };
-          console.log('Event fetched:', this.event);
         } else {
-          console.error('Event data is empty');
+          this.dialogueService.showDialogue('serverError');
         }
       },
       error: (err) => {
         console.error('Error fetching event details:', err);
-        alert('Error fetching event details. Please try again later.');
+        this.dialogueService.showDialogue('networkError');
       },
     });
   }
@@ -69,19 +70,19 @@ export class EventDetailsComponent implements OnInit {
       this.eventService.registerForEvent(eventId).subscribe({
         next: (isRegistered) => {
           if (isRegistered) {
-            alert('You have successfully registered for the event!');
+            this.dialogueService.showDialogue('eventRegistered');
             this.router.navigate(['my-events']);
           } else {
-            alert('You are already registered for this event!');
+            this.dialogueService.showDialogue('eventAlreadyRegistered');
           }
         },
         error: (err) => {
           console.error('Registration failed:', err);
-          alert('Something went wrong while trying to register.');
+          this.dialogueService.showDialogue('serverError');
         },
       });
     } else {
-      alert('Please log in to register!');
+      this.dialogueService.showDialogue('loginFailure');
       this.router.navigate(['login']);
     }
   }
@@ -93,19 +94,19 @@ export class EventDetailsComponent implements OnInit {
       this.eventService.unRegisterEvent(eventId).subscribe({
         next: (isUnregistered) => {
           if (isUnregistered) {
-            alert('You have successfully unregistered from the event.');
+            this.dialogueService.showDialogue('eventUnregistered');
             this.router.navigate(['my-events']);
           } else {
-            alert('You were not registered for this event.');
+            this.dialogueService.showDialogue('eventAlreadyRegistered');
           }
         },
         error: (err) => {
           console.error('Unregistration failed:', err);
-          alert('Something went wrong while trying to unregister.');
+          this.dialogueService.showDialogue('serverError');
         },
       });
     } else {
-      alert('Please log in to unregister!');
+      this.dialogueService.showDialogue('loginFailure');
       this.router.navigate(['login']);
     }
   }
@@ -117,14 +118,15 @@ export class EventDetailsComponent implements OnInit {
   }
 
   onDeleteClicked(id: string) {
+    this.dialogueService.showDialogue('unregisterConfirmation');
     this.eventService.deleteEvent(id).subscribe({
       next: () => {
-        alert(`Event with ID ${id} successfully deleted!`);
+        this.dialogueService.showDialogue('eventDeleted');
         this.router.navigate(['/home']);
       },
       error: (err) => {
         console.error('Error deleting event:', err);
-        alert('Could not delete event. Please try again later.');
+        this.dialogueService.showDialogue('serverError');
       },
     });
   }
@@ -134,5 +136,4 @@ export class EventDetailsComponent implements OnInit {
     const eventDate = new Date(this.event.doe);
     return eventDate < currentDate;
   }
-
 }

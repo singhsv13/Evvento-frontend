@@ -13,17 +13,17 @@ export class MyEventsComponent implements OnInit {
   paginatedEvents: Event[] = [];
   currentPage: number = 1;
   itemsPerPage: number = 6;
+  filterType: string = 'all';  // Default filter type is 'all'
+  sortDirection: 'nameAsc' | 'nameDesc' | 'dateAsc' | 'dateDesc' = 'nameAsc';  // Default sort direction
+  eventTypes = this.eventService.getEventTypes();
 
   constructor(private router: Router, private eventService: EventService) {}
 
   ngOnInit(): void {
     this.fetchRegisteredEvents();
-    this.updatePaginatedEvents();
   }
 
   fetchRegisteredEvents(): void {
-    // this.events = this.eventService.getRegisteredEvents();
-    // this.updatePaginatedEvents();
     const allRegisteredEvents = this.eventService.getRegisteredEvents();
     const allEvents = this.eventService.getAllEvents(); // Fetch all current events from the service.
 
@@ -36,18 +36,53 @@ export class MyEventsComponent implements OnInit {
   }
 
   updatePaginatedEvents(): void {
+    let filteredAndSortedEvents = this.events;
+
+    // Apply filter based on event type
+    if (this.filterType !== 'all') {
+      filteredAndSortedEvents = filteredAndSortedEvents.filter(
+        (event) => event.type === this.filterType
+      );
+    }
+
+    // Apply sorting
+    filteredAndSortedEvents = filteredAndSortedEvents.sort((a, b) => {
+      switch (this.sortDirection) {
+        case 'nameAsc':
+          return a.name.localeCompare(b.name);
+        case 'nameDesc':
+          return b.name.localeCompare(a.name);
+        case 'dateAsc':
+          return new Date(a.doe).getTime() - new Date(b.doe).getTime();
+        case 'dateDesc':
+          return new Date(b.doe).getTime() - new Date(a.doe).getTime();
+        default:
+          return 0;
+      }
+    });
+
+    // Calculate pagination
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedEvents = this.events.slice(startIndex, endIndex);
+    this.paginatedEvents = filteredAndSortedEvents.slice(startIndex, startIndex + this.itemsPerPage);
   }
 
-  changePage(page: number): void {
+  onPageChange(page: number): void {
     this.currentPage = page;
     this.updatePaginatedEvents();
   }
 
   totalPages(): number {
     return Math.ceil(this.events.length / this.itemsPerPage);
+  }
+
+  onFilterChange(filter: string): void {
+    this.filterType = filter;
+    this.updatePaginatedEvents();
+  }
+
+  onSortChange(direction: 'nameAsc' | 'nameDesc' | 'dateAsc' | 'dateDesc'): void {
+    this.sortDirection = direction;
+    this.updatePaginatedEvents();
   }
 
   readMoreClicked(id: string): void {

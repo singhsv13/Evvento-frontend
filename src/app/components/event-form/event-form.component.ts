@@ -158,6 +158,7 @@ import { NgForm } from '@angular/forms';
 import { Event } from 'src/app/model/Event';
 import { EventService } from 'src/app/services/event.service';
 import { ActivatedRoute } from '@angular/router';
+import { DialogueService } from 'src/app/services/dialogue.service';  // Import the DialogueService
 
 @Component({
   selector: 'app-event-form',
@@ -176,23 +177,18 @@ export class EventFormComponent implements OnInit {
     doe: '',
     organisedBy: '',
     imageURL: '',
-    expired : false
+    expired: false,
   };
 
-  eventTypes: string[] = [
-    'Business & Professional',
-    'Entertainment & Leisure',
-    'Social & Community',
-    'Awards & Recognition',
-    'Various',
-  ];
+  eventTypes = this.eventService.getEventTypes();
 
   isEditMode: boolean = false;
   eventId: string = '';
 
   constructor(
     private eventService: EventService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dialogueService: DialogueService  // Inject the DialogueService
   ) {}
 
   ngOnInit(): void {
@@ -209,13 +205,14 @@ export class EventFormComponent implements OnInit {
     this.eventService.getEventByID(id).subscribe({
       next: (event) => {
         this.event = { ...event };
-        this.updateExpiryStatus(); // Check expiry status when fetching event
+        this.updateExpiryStatus();
         if (this.eventForm) {
           this.populateFormWithEventDetails();
         }
       },
       error: (err) => {
         console.error('Error fetching event details:', err);
+        this.dialogueService.showDialogue('networkError');  // Show network error dialog
       },
     });
   }
@@ -223,8 +220,7 @@ export class EventFormComponent implements OnInit {
   updateExpiryStatus(): void {
     const today = new Date();
     const eventDate = new Date(this.event.doe);
-    this.event.expired = eventDate < today; // Check if the event date is in the past
-    console.log(`Event expired status: ${this.event.expired}`);
+    this.event.expired = eventDate < today;
   }
 
   populateFormWithEventDetails(): void {
@@ -253,18 +249,16 @@ export class EventFormComponent implements OnInit {
   onFormSubmit(): void {
     if (this.eventForm.invalid) {
       console.error('Form is invalid');
+      this.dialogueService.showDialogue('registrationError');  // Show error dialog if form is invalid
       return;
     }
-  
+
     const formValues = this.eventForm.value;
-  
     const today = new Date();
     const eventDate = new Date(formValues.eventDate);
-  
-    // Determine if the event is expired based on the date
+
     const isExpired = eventDate < today;
-    console.log(`Event is expired: ${isExpired}`);
-  
+
     if (this.isEditMode) {
       const updatedEvent: Event = {
         id: this.eventId,
@@ -275,18 +269,18 @@ export class EventFormComponent implements OnInit {
         location: formValues.eventLoc,
         organisedBy: formValues.eventOrganiser,
         imageURL: formValues.eventImageURL,
-        expired: isExpired, // Set the expiration status
+        expired: isExpired,
       };
-  
+
       this.eventService.editEventDetails(this.eventId, updatedEvent).subscribe({
         next: () => {
-          alert('Event updated successfully');
+          this.dialogueService.showDialogue('eventUpdated');  // Show success dialog on update
           this.eventForm.reset();
           this.isEditMode = false;
         },
         error: (err) => {
           console.error('Error updating event:', err);
-          alert('Failed to update event');
+          this.dialogueService.showDialogue('serverError');  // Show error dialog if update fails
         },
       });
     } else {
@@ -299,10 +293,11 @@ export class EventFormComponent implements OnInit {
         location: formValues.eventLoc,
         organisedBy: formValues.eventOrganiser,
         imageURL: formValues.eventImageURL,
-        expired: isExpired, // Set the expiration status
+        expired: isExpired,
       };
-  
+
       this.eventService.addNewEvent(newEvent);
+      this.dialogueService.showDialogue('eventCreated');  // Show success dialog on event creation
       this.eventForm.reset();
     }
   }

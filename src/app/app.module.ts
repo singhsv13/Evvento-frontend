@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { SharedModule } from './shared/modules/shared.module';
 
 
 import { AppComponent } from './app.component';
@@ -16,6 +17,9 @@ import { MyEventsComponent } from './components/my-events/my-events.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ProfileComponent } from './components/profile/profile.component';
 
+import { CustomDateValidatorDirective } from './shared/validators/custom-date-validator.directive';
+
+
 
 @NgModule({
   declarations: [
@@ -28,14 +32,18 @@ import { ProfileComponent } from './components/profile/profile.component';
     EventDetailsComponent,
     MyEventsComponent,
     FooterComponent,
-    ProfileComponent
+    ProfileComponent,
+    CustomDateValidatorDirective,
+
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

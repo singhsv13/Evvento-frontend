@@ -13,8 +13,22 @@
     overflow: hidden;
   }
   
-  .btn-outline-secondary {
+  /* .btn-outline-secondary {
     border-radius: 50%;
     padding: 6px 10px;
-  }
+  } */
+
+  /* Ensure modal backdrop has a dimming effect */
+/* Ensure modal backdrop has a dimming effect but doesn't block the modal content */
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5); /* Dim the background */
+  z-index: 1040; /* Set z-index lower than the modal content */
+}
+
+/* Ensure modal content is above the backdrop */
+.modal-dialog {
+  z-index: 1050; /* Modal content on top */
+}
+
+
   

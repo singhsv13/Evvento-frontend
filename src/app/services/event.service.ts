@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Event } from '../model/Event';
-import { BehaviorSubject, delay, map, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, delay, map, Observable, of } from 'rxjs';
 import { AuthService } from './auth.service';
 import { User } from '../model/User';
 import { Router } from '@angular/router';
@@ -12,279 +12,295 @@ export class EventService {
   eventList: Event[] = [
     {
       id: '1',
-      name: 'Annual Business Summit',
-      desc: 'A summit to discuss emerging business trends.',
+      name: 'Tech Innovators Conference',
+      desc: 'A global conference showcasing the latest innovations in technology.',
+      type: 'Technology',
+      location: 'San Francisco, CA',
+      doe: '2025-06-10',
+      organisedBy: 'TechCorp',
+      imageURL: 'https://example.com/images/tech_innovators.jpg',
+      expired: false,
+    },
+    {
+      id: '2',
+      name: 'Art & Culture Festival',
+      desc: 'A celebration of global art and cultural diversity with performances and exhibitions.',
+      type: 'Arts & Culture',
+      location: 'Paris, France',
+      doe: '2025-07-15',
+      organisedBy: 'Artistry International',
+      imageURL: 'https://example.com/images/art_culture.jpg',
+      expired: false,
+    },
+    {
+      id: '3',
+      name: 'International Business Summit',
+      desc: 'A meeting of business leaders to discuss strategies for global economic growth.',
       type: 'Business & Professional',
-      location: 'New York, NY',
-      doe: '2024-12-15',
+      location: 'London, UK',
+      doe: '2025-05-20',
       organisedBy: 'Global Business Forum',
       imageURL: 'https://example.com/images/business_summit.jpg',
       expired: false,
     },
     {
-      id: '2',
-      name: 'Movie Marathon',
-      desc: 'Enjoy a weekend of classic films back-to-back.',
-      type: 'Entertainment & Leisure',
-      location: 'Los Angeles, CA',
-      doe: '2024-12-20',
-      organisedBy: 'Cinema Lovers Club',
-      imageURL: 'https://example.com/images/movie_marathon.jpg',
-      expired: false,
-    },
-    {
-      id: '3',
-      name: 'Community Cleanup Day',
-      desc: 'Join us in keeping our community clean and beautiful.',
-      type: 'Social & Community',
-      location: 'Austin, TX',
-      doe: '2024-11-30',
-      organisedBy: 'Austin Green Team',
-      imageURL: 'https://example.com/images/community_cleanup.jpg',
-      expired: false,
-    },
-    {
       id: '4',
-      name: 'Employee of the Year Awards',
-      desc: 'Celebrating the hard work and achievements of our employees.',
-      type: 'Awards & Recognition',
-      location: 'San Francisco, CA',
-      doe: '2024-12-10',
-      organisedBy: 'Tech Corp',
-      imageURL: 'https://example.com/images/employee_awards.jpg',
+      name: 'Healthcare Innovation Expo',
+      desc: 'A trade show featuring the latest advancements in healthcare technology and practices.',
+      type: 'Healthcare',
+      location: 'New York, NY',
+      doe: '2025-09-05',
+      organisedBy: 'HealthTech Solutions',
+      imageURL: 'https://example.com/images/healthcare_expo.jpg',
       expired: false,
     },
     {
       id: '5',
-      name: 'Global Cuisine Festival',
-      desc: 'Experience flavors from around the world.',
-      type: 'Various',
-      location: 'Chicago, IL',
-      doe: '2024-12-05',
-      organisedBy: 'World Foodie Events',
-      imageURL: 'https://example.com/images/cuisine_festival.jpg',
+      name: 'Startup Bootcamp',
+      desc: 'A week-long bootcamp for budding entrepreneurs to learn from experts in the startup world.',
+      type: 'Business & Professional',
+      location: 'Berlin, Germany',
+      doe: '2025-04-25',
+      organisedBy: 'Startup Academy',
+      imageURL: 'https://example.com/images/startup_bootcamp.jpg',
       expired: false,
     },
     {
       id: '6',
-      name: 'Startup Pitch Night',
-      desc: 'Pitch your startup idea to potential investors.',
-      type: 'Business & Professional',
-      location: 'Silicon Valley, CA',
-      doe: '2024-12-18',
-      organisedBy: 'Investor Hub',
-      imageURL: 'https://example.com/images/pitch_night.jpg',
+      name: 'Music Lovers Festival',
+      desc: 'A weekend celebration of live music from various genres.',
+      type: 'Music & Entertainment',
+      location: 'Austin, TX',
+      doe: '2025-08-14',
+      organisedBy: 'MusicWorld',
+      imageURL: 'https://example.com/images/music_festival.jpg',
       expired: false,
     },
     {
       id: '7',
-      name: 'Charity Concert',
-      desc: 'A concert to raise funds for local charities.',
-      type: 'Entertainment & Leisure',
-      location: 'Miami, FL',
-      doe: '2024-12-12',
-      organisedBy: 'Charity Beats',
-      imageURL: 'https://example.com/images/charity_concert.jpg',
+      name: 'Digital Marketing Expo',
+      desc: 'An event for digital marketers to learn the latest trends and techniques in online marketing.',
+      type: 'Marketing & Sales',
+      location: 'Los Angeles, CA',
+      doe: '2025-10-01',
+      organisedBy: 'DigitalMarketers Inc.',
+      imageURL: 'https://example.com/images/digital_marketing.jpg',
       expired: false,
     },
     {
       id: '8',
-      name: 'Neighborhood Potluck',
-      desc: 'A chance to meet and greet with your neighbors.',
-      type: 'Social & Community',
-      location: 'Boston, MA',
-      doe: '2024-11-28',
-      organisedBy: 'Boston Community Group',
-      imageURL: 'https://example.com/images/potluck.jpg',
+      name: 'Environmental Sustainability Conference',
+      desc: 'A global summit to discuss strategies for a more sustainable future.',
+      type: 'Environment',
+      location: 'Sydney, Australia',
+      doe: '2025-11-21',
+      organisedBy: 'GreenFuture Org.',
+      imageURL: 'https://example.com/images/environment_conference.jpg',
       expired: false,
     },
     {
       id: '9',
-      name: 'Leadership Excellence Awards',
-      desc: 'Recognizing outstanding leadership in the industry.',
-      type: 'Awards & Recognition',
-      location: 'Houston, TX',
-      doe: '2024-12-22',
-      organisedBy: 'Excellence Forum',
-      imageURL: 'https://example.com/images/leadership_awards.jpg',
+      name: 'Fashion Week New York',
+      desc: 'A premier event for the latest in high-end fashion and design.',
+      type: 'Fashion',
+      location: 'New York, NY',
+      doe: '2025-09-10',
+      organisedBy: 'NY Fashion Society',
+      imageURL: 'https://example.com/images/fashion_week.jpg',
       expired: false,
     },
     {
       id: '10',
-      name: 'Art & Craft Workshop',
-      desc: 'Unleash your creativity with guided art sessions.',
-      type: 'Various',
-      location: 'Seattle, WA',
-      doe: '2024-12-02',
-      organisedBy: 'Art Lovers Society',
-      imageURL: 'https://example.com/images/art_workshop.jpg',
+      name: 'Culinary Arts Expo',
+      desc: 'A showcase of global cuisine from renowned chefs and culinary experts.',
+      type: 'Food & Drink',
+      location: 'Rome, Italy',
+      doe: '2025-06-30',
+      organisedBy: 'Culinary Creators',
+      imageURL: 'https://example.com/images/culinary_arts.jpg',
       expired: false,
     },
     {
       id: '11',
-      name: 'E-commerce Mastery',
-      desc: 'A workshop on building and growing e-commerce stores.',
-      type: 'Business & Professional',
-      location: 'Dallas, TX',
-      doe: '2024-12-08',
-      organisedBy: 'Ecom Gurus',
-      imageURL: 'https://example.com/images/ecommerce_workshop.jpg',
+      name: 'Smart Cities Expo',
+      desc: 'An event exploring the latest innovations in urban development and smart technology.',
+      type: 'Technology',
+      location: 'Dubai, UAE',
+      doe: '2025-05-18',
+      organisedBy: 'SmartCity Expo',
+      imageURL: 'https://example.com/images/smart_cities.jpg',
       expired: false,
     },
     {
       id: '12',
-      name: 'Jazz Evening',
-      desc: 'Enjoy a night of soulful jazz music.',
-      type: 'Entertainment & Leisure',
-      location: 'New Orleans, LA',
-      doe: '2024-12-14',
-      organisedBy: 'Jazz Club',
-      imageURL: 'https://example.com/images/jazz_evening.jpg',
+      name: 'Film Industry Awards',
+      desc: 'A glamorous event to celebrate the best in cinema and filmmaking.',
+      type: 'Entertainment',
+      location: 'Los Angeles, CA',
+      doe: '2025-02-10',
+      organisedBy: 'Hollywood Films',
+      imageURL: 'https://example.com/images/film_awards.jpg',
       expired: false,
     },
     {
       id: '13',
-      name: 'Holiday Food Drive',
-      desc: 'Donate food and help those in need during the holidays.',
-      type: 'Social & Community',
-      location: 'Atlanta, GA',
-      doe: '2024-11-25',
-      organisedBy: 'Helping Hands',
-      imageURL: 'https://example.com/images/food_drive.jpg',
+      name: 'Space Exploration Summit',
+      desc: 'A conference to discuss the future of space exploration and commercial space ventures.',
+      type: 'Science & Technology',
+      location: 'Houston, TX',
+      doe: '2025-08-05',
+      organisedBy: 'SpaceTech Ventures',
+      imageURL: 'https://example.com/images/space_exploration.jpg',
       expired: false,
     },
     {
       id: '14',
-      name: 'Best Startup Awards',
-      desc: 'Celebrating innovative startups across industries.',
-      type: 'Awards & Recognition',
-      location: 'San Diego, CA',
-      doe: '2024-12-17',
-      organisedBy: 'Innovation Hub',
-      imageURL: 'https://example.com/images/startup_awards.jpg',
+      name: 'AI and Robotics Forum',
+      desc: 'An event focused on the integration of AI and robotics across industries.',
+      type: 'Technology',
+      location: 'Tokyo, Japan',
+      doe: '2025-07-25',
+      organisedBy: 'AI Robotics Corp.',
+      imageURL: 'https://example.com/images/ai_robotics.jpg',
       expired: false,
     },
     {
       id: '15',
-      name: 'Annual Book Fair',
-      desc: 'Discover new books and meet local authors.',
-      type: 'Various',
-      location: 'Portland, OR',
-      doe: '2024-12-01',
-      organisedBy: 'Readers Paradise',
-      imageURL: 'https://example.com/images/book_fair.jpg',
+      name: 'Crypto & Blockchain Summit',
+      desc: 'A gathering of crypto enthusiasts and blockchain developers to explore new opportunities.',
+      type: 'Finance & Technology',
+      location: 'Singapore',
+      doe: '2025-09-12',
+      organisedBy: 'CryptoWorld',
+      imageURL: 'https://example.com/images/crypto_blockchain.jpg',
       expired: false,
     },
     {
       id: '16',
-      name: "Women's Empowerment Conference",
-      desc: 'Empowering women to succeed in business and life.',
-      type: 'Business & Professional',
-      location: 'Phoenix, AZ',
-      doe: '2024-12-09',
-      organisedBy: 'EmpowerHer',
-      imageURL: 'https://example.com/images/empowerment_conference.jpg',
+      name: 'Adventure Sports Challenge',
+      desc: 'A thrilling competition for adventure sports enthusiasts.',
+      type: 'Sports & Recreation',
+      location: 'Vancouver, Canada',
+      doe: '2025-07-02',
+      organisedBy: 'AdventureSports Inc.',
+      imageURL: 'https://example.com/images/adventure_sports.jpg',
       expired: false,
     },
     {
       id: '17',
-      name: 'Rock Music Festival',
-      desc: 'A weekend of rock music with local bands.',
-      type: 'Entertainment & Leisure',
-      location: 'Las Vegas, NV',
-      doe: '2024-12-13',
-      organisedBy: 'Rock United',
-      imageURL: 'https://example.com/images/rock_festival.jpg',
+      name: 'Coding Bootcamp for Beginners',
+      desc: 'An intensive coding bootcamp aimed at aspiring software developers.',
+      type: 'Education & Learning',
+      location: 'San Diego, CA',
+      doe: '2025-04-14',
+      organisedBy: 'TechLearn Academy',
+      imageURL: 'https://example.com/images/coding_bootcamp.jpg',
       expired: false,
     },
     {
       id: '18',
-      name: 'Public Speaking Workshop',
-      desc: 'Improve your public speaking skills.',
-      type: 'Various',
-      location: 'Denver, CO',
-      doe: '2024-12-06',
-      organisedBy: 'Orators Hub',
-      imageURL: 'https://example.com/images/speaking_workshop.jpg',
+      name: 'Global Entrepreneurship Summit',
+      desc: 'A summit to inspire and equip entrepreneurs with the tools they need to succeed.',
+      type: 'Business & Professional',
+      location: 'Dubai, UAE',
+      doe: '2025-11-05',
+      organisedBy: 'Entrepreneurship Foundation',
+      imageURL: 'https://example.com/images/entrepreneurship_summit.jpg',
       expired: false,
     },
     {
       id: '19',
-      name: 'Science & Tech Awards',
-      desc: 'Honoring advancements in science and technology.',
-      type: 'Awards & Recognition',
-      location: 'San Jose, CA',
-      doe: '2024-12-19',
-      organisedBy: 'FutureTech',
-      imageURL: 'https://example.com/images/science_awards.jpg',
+      name: 'World Poetry Festival',
+      desc: 'An event celebrating the art of poetry with poets from around the world.',
+      type: 'Arts & Culture',
+      location: 'London, UK',
+      doe: '2025-03-22',
+      organisedBy: 'Poetry Society',
+      imageURL: 'https://example.com/images/poetry_festival.jpg',
       expired: false,
     },
     {
       id: '20',
-      name: 'Local Farmers Market',
-      desc: 'Support local farmers and buy fresh produce.',
-      type: 'Social & Community',
-      location: 'Sacramento, CA',
-      doe: '2024-12-07',
-      organisedBy: 'Sacramento Farmers Association',
-      imageURL: 'https://example.com/images/farmers_market.jpg',
+      name: 'International Chef Competition',
+      desc: 'A prestigious competition where top chefs showcase their culinary skills.',
+      type: 'Food & Drink',
+      location: 'Paris, France',
+      doe: '2025-06-20',
+      organisedBy: 'Gourmet Chefs',
+      imageURL: 'https://example.com/images/chef_competition.jpg',
       expired: false,
     },
   ];
 
-  eventObs: Observable<Event> = new Observable<Event>();
   activeUser: User;
+  
+  eventTypes: string[] = [
+    'Business & Professional',
+    'Entertainment & Leisure',
+    'Technology',
+    'Food & Drink',
+    'Arts & Culture',
+    'Others',
+  ];
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  /**
+   * Add a new event to the event list.
+   */
   addNewEvent(event: Event) {
-    console.log('added event : ', event);
+    console.log('Added event:', event);
     event.expired = false;
     this.eventList.push(event);
   }
 
+  /**
+   * Get an event by its ID.
+   */
   getEventByID(id: string): Observable<Event> {
     const event = this.eventList.find((event) => event.id === id);
-  if (event) {
-    this.checkAndMarkExpired(event);
-    event['isRegistered'] = this.isUserRegisteredForEvent(id); // Add the flag
-  }
-  return of(event);
+    if (event) {
+      this.checkAndMarkExpired(event);
+      event['isRegistered'] = this.isUserRegisteredForEvent(id); // Add the flag
+    }
+    return of(event);
   }
 
+  /**
+   * Get all events as an array.
+   */
   getAllEvents(): Event[] {
-    this.eventList.forEach((event) => this.checkAndMarkExpired(event));
+    this.eventList.forEach((event) => {
+      this.checkAndMarkExpired(event);
+      event['isRegistered'] = this.isUserRegisteredForEvent(event.id); // Add the flag
+    });
     return this.eventList;
   }
 
+  /**
+   * Get all events as an observable.
+   */
   getAllEventsObservable(): Observable<Event[]> {
     this.eventList.forEach((event) => {
       this.checkAndMarkExpired(event);
       event['isRegistered'] = this.isUserRegisteredForEvent(event.id); // Add the flag
     });
-    return of(this.eventList).pipe(delay(1000)); 
+    return of(this.eventList);
+    // return of(this.eventList).pipe(delay(1000));
   }
 
-  private checkAndMarkExpired(event: Event): void {
-    const eventDate = new Date(event.doe);
-    const currentDate = new Date();
-
-    if (eventDate < currentDate) {
-      event.expired = true;
-    } else {
-      event.expired = false;
-    }
-  }
-
+  /**
+   * Register a user for an event.
+   */
   registerForEvent(eventId: string): Observable<boolean> {
     this.activeUser = this.authService.getActiveUser();
 
     if (this.activeUser) {
-      const alreadyRegisteredEvent = this.activeUser.regEvents?.find(
+      const alreadyRegistered = this.activeUser.regEvents?.find(
         (event) => event.id === eventId
       );
 
-      if (alreadyRegisteredEvent) {
+      if (alreadyRegistered) {
         console.error('User is already registered for this event.');
         return of(false);
       }
@@ -308,70 +324,93 @@ export class EventService {
     }
   }
 
-  getRegisteredEvents(): Event[] {
-    this.activeUser = this.authService.getActiveUser();
-    console.log('Registered Events : ', this.activeUser.regEvents);
-    return this.activeUser ? this.activeUser.regEvents : [];
-  }
-
-  editEventDetails(eventId: string, updatedEvent: Event): Observable<boolean> {
-    const eventIndex = this.eventList.findIndex(
-      (event) => event.id === eventId
-    );
-
-    if (eventIndex !== -1) {
-      this.eventList[eventIndex] = updatedEvent;
-      console.log('Event updated:', updatedEvent);
-      return of(true); // Return success
-    } else {
-      console.error('Event not found.');
-      return of(false); // Return failure
-    }
-  }
-
-  deleteEvent(eventId: string): Observable<Event[]> {
-    const eventIndex = this.eventList.findIndex(
-      (event) => event.id === eventId
-    );
-    if (eventIndex !== -1) {
-      this.eventList.splice(eventIndex, 1);
-      console.log(`Event with ID ${eventId} successfully deleted.`);
-      return of(this.eventList);
-    } else {
-      console.error(`Event with ID ${eventId} not found.`);
-      return of(this.eventList);
-    }
-  }
+  /**
+   * unRegister a user for an event.
+   */
 
   unRegisterEvent(eventId: string): Observable<boolean> {
     this.activeUser = this.authService.getActiveUser();
 
-    if (this.activeUser && this.activeUser.regEvents) {
-      const eventIndex = this.activeUser.regEvents.findIndex(
+    if (this.activeUser) {
+      const eventIndex = this.activeUser.regEvents?.findIndex(
         (event) => event.id === eventId
       );
 
-      if (eventIndex !== -1) {
-        this.activeUser.regEvents.splice(eventIndex, 1);
-        console.log(`Unregistered from event with ID ${eventId}`);
+      if (eventIndex !== undefined && eventIndex !== -1) {
+        this.activeUser.regEvents?.splice(eventIndex, 1);
+        console.log('User unregistered from event:', eventId);
         return of(true);
       } else {
-        console.error('Event not found in registered events.');
+        console.error('User is not registered for this event.');
         return of(false);
       }
     } else {
-      console.error('No active user or no registered events found.');
+      console.error('No active user found.');
       return of(false);
     }
   }
 
-  isUserRegisteredForEvent(eventId: string): boolean {
+  /**
+   * Get the list of events registered by the user.
+   */
+  getRegisteredEvents(): Event[] {
     this.activeUser = this.authService.getActiveUser();
-    if (this.activeUser && this.activeUser.regEvents) {
-      return this.activeUser.regEvents.some((event) => event.id === eventId);
-    }
-    return false;
+    return this.activeUser ? this.activeUser.regEvents : [];
   }
 
-}
+  /**
+   * Edit an event's details.
+   */
+  editEventDetails(eventId: string, updatedEvent: Event): Observable<boolean> {
+    const eventIndex = this.eventList.findIndex((event) => event.id === eventId);
 
+    if (eventIndex !== -1) {
+      this.eventList[eventIndex] = updatedEvent;
+      console.log('Event updated:', updatedEvent);
+      return of(true);
+    } else {
+      console.error('Event not found.');
+      return of(false);
+    }
+  }
+
+  /**
+   * Delete an event by its ID.
+   */
+  deleteEvent(eventId: string): Observable<boolean> {
+    const eventIndex = this.eventList.findIndex((event) => event.id === eventId);
+
+    if (eventIndex !== -1) {
+      this.eventList.splice(eventIndex, 1);
+      console.log('Event deleted with ID:', eventId);
+      return of(true);
+    } else {
+      console.error('Event not found.');
+      return of(false);
+    }
+  }
+
+  /**
+   * Check and mark an event as expired if the date has passed.
+   */
+  private checkAndMarkExpired(event: Event): void {
+    const eventDate = new Date(event.doe);
+    const currentDate = new Date();
+
+    event.expired = eventDate < currentDate;
+  }
+
+  /**
+   * Check if the user is registered for an event.
+   */
+  private isUserRegisteredForEvent(eventId: string): boolean {
+    this.activeUser = this.authService.getActiveUser();
+    return (
+      this.activeUser?.regEvents?.some((event) => event.id === eventId) || false
+    );
+  }
+
+  getEventTypes() : string[] {
+    return this.eventTypes;
+  }
+}
