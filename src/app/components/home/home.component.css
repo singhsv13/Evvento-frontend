@@ -1,25 +1,32 @@
-/* Card Hover Effect */
-.card {
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Pagination Hover */
-  .pagination .page-item .page-link:hover {
-    background-color: #007bff;
-    color: #fff;
-  }
-  
-  /* Responsive Filter and Sort Section */
-  .d-flex.flex-wrap {
-    gap: 1rem; /* Add spacing for responsiveness */
-  }
-  
-  /* Custom Button Shadow */
-  .btn-outline-secondary {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
+.home-container {
+  font-family: 'Ubuntu', serif;
+}
+
+.hero-section {
+  position: relative;
+  color: white;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+}
+
+.hero-section .btn {
+  background-color: #007bff;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.hero-section .btn:hover {
+  background-color: #0056b3;
+}
+
+.cta-section {
+  background-color: #343a40;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+.brand{
+  font-family: 'Pacifico', cursive;
+}

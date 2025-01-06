@@ -7,12 +7,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class SortComponent implements OnInit {
 
-
-  // @Output() sortChange = new EventEmitter<'nameAsc' | 'nameDesc' | 'dateAsc' | 'dateDesc'>();
-
-  // onSortChange(direction: 'nameAsc' | 'nameDesc' | 'dateAsc' | 'dateDesc'): void {
-  //   this.sortChange.emit(direction);
-  // }
   @Output() sortChange = new EventEmitter<'nameAsc' | 'nameDesc' | 'dateAsc' | 'dateDesc'>();
   @Input() activeSort: 'nameAsc' | 'nameDesc' | 'dateAsc' | 'dateDesc' = 'nameAsc';
 

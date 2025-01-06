@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Event } from 'src/app/model/Event';
 import { EventService } from 'src/app/services/event.service';
 
@@ -9,85 +9,37 @@ import { EventService } from 'src/app/services/event.service';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  events: Event[] = [];
-  activeEvents: Event[] = [];
-  expiredEvents: Event[] = [];
-  currentPage: number = 1;
-  itemsPerPage: number = 6;
-  paginatedEvents: Event[] = [];
+  eventList: Event[] = [];
 
-  isLoading : boolean = true;
-
-  sortDirection: 'nameAsc' | 'nameDesc' | 'dateAsc' | 'dateDesc' = 'nameAsc';
-
-  eventTypes = this.eventService.getEventTypes();
-
-  filterType: string = 'all';
-  totalPages: number = 0;
-
-  constructor(private router: Router, private route: ActivatedRoute, private eventService: EventService) {}
+  constructor(private eventService: EventService, private router: Router) {}
 
   ngOnInit(): void {
-    //getting data via resolve guard
-    setTimeout(() => {
-      this.isLoading = false; // Set to false after loading is complete
-      this.route.data.subscribe((data) => {
-        this.events = data['events'];
-        this.updateEventLists();
-        this.updatePaginatedEvents();
-      });
-    }, 1000); // Adjust time as per the actual loading process
-    
-  }
-
-  updateEventLists(): void {
-    this.expiredEvents = this.events.filter((event) => event.expired);
-    this.activeEvents = this.events.filter((event) => !event.expired);
-  }
-
-  onFilterChange(filter: string): void {
-    this.filterType = filter;
-    this.updatePaginatedEvents(); // Update events based on filter
-  }
-
-  onSortChange(direction: 'nameAsc' | 'nameDesc' | 'dateAsc' | 'dateDesc'): void {
-    this.sortDirection = direction;
-    this.updatePaginatedEvents();
-  }
-
-  updatePaginatedEvents(): void {
-    let filteredAndSortedEvents = this.events;
-
-    if (this.filterType !== 'all') {
-      filteredAndSortedEvents = filteredAndSortedEvents.filter((event) => event.type === this.filterType);
-    }
-
-    filteredAndSortedEvents = filteredAndSortedEvents.sort((a, b) => {
-      switch (this.sortDirection) {
-        case 'nameAsc':
-          return a.name.localeCompare(b.name);
-        case 'nameDesc':
-          return b.name.localeCompare(a.name);
-        case 'dateAsc':
-          return new Date(a.doe).getTime() - new Date(b.doe).getTime();
-        case 'dateDesc':
-          return new Date(b.doe).getTime() - new Date(a.doe).getTime();
-        default:
-          return 0;
-      }
+    this.eventService.getAllEventsObservable().subscribe((data) => {
+      this.eventList = data;
     });
-
-    this.totalPages = Math.ceil(filteredAndSortedEvents.length / this.itemsPerPage);
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    this.paginatedEvents = filteredAndSortedEvents.slice(startIndex, startIndex + this.itemsPerPage);
+    this.eventList = this.getUpcomingEvents();
+    console.log(this.eventList);
   }
 
-  onPageChange(page: number): void {
-    this.currentPage = page;
-    this.updatePaginatedEvents();
+  onExploreClicked() {
+    this.router.navigateByUrl('all-events');
   }
 
-  onLinkClicked(id: string): void {
-    this.router.navigate(['event', id]);
+  getUpcomingEvents() {
+    const today = new Date();
+
+    const upcomingEvents = this.eventList.filter(
+      (event) => new Date(event.doe) > today
+    );
+
+    upcomingEvents.sort(
+      (a, b) => new Date(a.doe).getTime() - new Date(b.doe).getTime()
+    );
+
+    return upcomingEvents.slice(0, 3);
+  }
+
+  onBtnClicked() {
+    this.router.navigateByUrl('login');
   }
 }

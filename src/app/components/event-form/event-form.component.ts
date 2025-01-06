@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Event } from 'src/app/model/Event';
 import { EventService } from 'src/app/services/event.service';
 import { ActivatedRoute } from '@angular/router';
-import { DialogueService } from 'src/app/services/dialogue.service';  // Import the DialogueService
+import { DialogueService } from 'src/app/services/dialogue.service';  
 
 @Component({
   selector: 'app-event-form',
@@ -33,7 +33,7 @@ export class EventFormComponent implements OnInit {
   constructor(
     private eventService: EventService,
     private route: ActivatedRoute,
-    private dialogueService: DialogueService  // Inject the DialogueService
+    private dialogueService: DialogueService 
   ) {}
 
   ngOnInit(): void {
@@ -57,7 +57,7 @@ export class EventFormComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching event details:', err);
-        this.dialogueService.showDialogue('networkError');  // Show network error dialog
+        this.dialogueService.showDialogue('networkError'); 
       },
     });
   }
@@ -94,7 +94,7 @@ export class EventFormComponent implements OnInit {
   onFormSubmit(): void {
     if (this.eventForm.invalid) {
       console.error('Form is invalid');
-      this.dialogueService.showDialogue('registrationError');  // Show error dialog if form is invalid
+      this.dialogueService.showDialogue('registrationError');  
       return;
     }
 
@@ -119,13 +119,13 @@ export class EventFormComponent implements OnInit {
 
       this.eventService.editEventDetails(this.eventId, updatedEvent).subscribe({
         next: () => {
-          this.dialogueService.showDialogue('eventUpdated');  // Show success dialog on update
+          this.dialogueService.showDialogue('eventUpdated'); 
           this.eventForm.reset();
           this.isEditMode = false;
         },
         error: (err) => {
           console.error('Error updating event:', err);
-          this.dialogueService.showDialogue('serverError');  // Show error dialog if update fails
+          this.dialogueService.showDialogue('serverError');  
         },
       });
     } else {
@@ -142,7 +142,7 @@ export class EventFormComponent implements OnInit {
       };
 
       this.eventService.addNewEvent(newEvent);
-      this.dialogueService.showDialogue('eventCreated');  // Show success dialog on event creation
+      this.dialogueService.showDialogue('eventCreated'); 
       this.eventForm.reset();
     }
   }

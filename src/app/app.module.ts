@@ -9,7 +9,7 @@ import { SharedModule } from './shared/modules/shared.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { HomeComponent } from './components/home/home.component';
+import { AllEventsComponent } from './components/all-events/all-events.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { EventFormComponent } from './components/event-form/event-form.component';
 import { EventDetailsComponent } from './components/event-details/event-details.component';
@@ -18,6 +18,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { ProfileComponent } from './components/profile/profile.component';
 
 import { CustomDateValidatorDirective } from './shared/validators/custom-date-validator.directive';
+import { HomeComponent } from './components/home/home.component';
 
 
 
@@ -26,7 +27,7 @@ import { CustomDateValidatorDirective } from './shared/validators/custom-date-va
     AppComponent,
     LoginComponent,
     NavbarComponent,
-    HomeComponent,
+    AllEventsComponent,
     NotFoundComponent,
     EventFormComponent,
     EventDetailsComponent,
@@ -34,6 +35,7 @@ import { CustomDateValidatorDirective } from './shared/validators/custom-date-va
     FooterComponent,
     ProfileComponent,
     CustomDateValidatorDirective,
+    HomeComponent,
 
 
   ],
