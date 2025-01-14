@@ -70,6 +70,10 @@ export class DialogueService {
     // Miscellaneous
     searchSuccess: { message: 'Here are the results matching your criteria.', type: 'success' } as const,
     searchFailure: { message: 'No results found. Try different search terms.', type: 'info' } as const,
+
+    //Unauthorised 
+    authDenied: { message: 'You do not have the required permissions to access this page.', type: 'error' } as const,
+
   };
   
 

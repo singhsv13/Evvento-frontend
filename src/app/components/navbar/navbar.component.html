@@ -32,7 +32,7 @@
             <i class="fa fa-list-ul me-1"></i>Event List
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="loggedIn && role === 'user'">
           <a
             class="nav-link text-light small"
             routerLink="/my-events"
@@ -42,7 +42,7 @@
             <i class="fa fa-heart me-1"></i>My Events
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="role === 'eventManager'">
           <a
             class="nav-link text-light small"
             routerLink="/register-event"

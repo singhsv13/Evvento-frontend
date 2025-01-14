@@ -7,9 +7,7 @@ import { User } from '../model/User';
   providedIn: 'root',
 })
 export class AuthService {
-
-  loggedUser : User;
-
+  loggedUser: User;
   private isLoggedIn: boolean = false;
 
   constructor(private userservice: UserService, private router: Router) {}
@@ -18,8 +16,8 @@ export class AuthService {
     let user = this.userservice.users.find((user) => {
       return user.email === email && user.password === password;
     });
-    console.log('User : ', user)
 
+    console.log('User : ', user);
     this.loggedUser = user;
 
     if (user === undefined) {
@@ -30,37 +28,44 @@ export class AuthService {
     return user;
   }
 
-  registerUser(name: string, email: string, password: string) {
-    let newUser = this.userservice.users.find((user) => user.email === email);
+  registerUser(name: string, email: string, password: string, role: 'user' | 'eventManager' = 'user') {
+    let existingUser = this.userservice.users.find((user) => user.email === email);
 
-    if (newUser) {
-      return undefined;
+    if (existingUser) {
+      return undefined; // User with the same email already exists
     } else {
-      newUser = new User(name, email, password);
+      const newUser = new User(name, email, password, role);
       this.loggedUser = newUser;
       this.userservice.users.push(newUser);
       this.isLoggedIn = true;
+      console.log("New User : ", newUser);
+      return newUser;
     }
-    this.loggedUser = newUser;
-    console.log("new User : ",newUser)
-    return newUser;
   }
 
-  getUserId() : string {
+  getUserId(): string {
     return this.loggedUser.id;
   }
 
-  getActiveUser() : User{
+  getActiveUser(): User {
     return this.loggedUser;
+  }
+
+  getUserRole(): 'user' | 'eventManager' {
+    return this.loggedUser.role;
   }
 
   logOut() {
     this.isLoggedIn = false;
-    console.log(`${this.loggedUser.name}, Logged Out!!`)
+    console.log(`${this.loggedUser?.name ?? 'User'}, Logged Out!`);
     this.router.navigate(['/login']);
   }
 
-  isAuthenticated() {
+  isAuthenticated(): boolean {
     return this.isLoggedIn;
+  }
+
+  hasRole(role: 'user' | 'eventManager'): boolean {
+    return this.isLoggedIn && this.loggedUser?.role === role;
   }
 }

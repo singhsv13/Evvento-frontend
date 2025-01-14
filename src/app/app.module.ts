@@ -19,6 +19,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 
 import { CustomDateValidatorDirective } from './shared/validators/custom-date-validator.directive';
 import { HomeComponent } from './components/home/home.component';
+import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 
 
 
@@ -36,6 +37,7 @@ import { HomeComponent } from './components/home/home.component';
     ProfileComponent,
     CustomDateValidatorDirective,
     HomeComponent,
+    UnauthorizedComponent,
 
 
   ],

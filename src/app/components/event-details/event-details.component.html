@@ -62,7 +62,7 @@
           <!-- Conditionally disable or hide based on expiration logic -->
           <!-- Conditionally show Register or Unregister button -->
           <button
-            *ngIf="!event?.isRegistered"
+            *ngIf="!event?.isRegistered  && role === 'user'"
             type="button"
             class="btn btn-success px-4 py-2 shadow"
             [disabled]="isEventExpired()"
@@ -71,7 +71,7 @@
             <i class="fas fa-user-plus me-2"></i> Register
           </button>
           <button
-            *ngIf="event?.isRegistered"
+            *ngIf="event?.isRegistered && role === 'user'"
             type="button"
             class="btn btn-warning px-4 py-2 text-white shadow"
             [disabled]="isEventExpired()"
@@ -82,6 +82,7 @@
           <button
             type="button"
             class="btn btn-primary px-4 py-2 shadow"
+            *ngIf="role === 'eventManager'"
             [disabled]="isEventExpired()"
             (click)="onEditClicked(event.id)"
           >
@@ -90,6 +91,7 @@
           <button
             type="button"
             class="btn btn-danger px-4 py-2 shadow"
+            *ngIf="role === 'eventManager'"
             [disabled]="isEventExpired()"
             (click)="onDeleteClicked(event.id)"
           >

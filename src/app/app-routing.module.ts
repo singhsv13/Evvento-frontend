@@ -10,6 +10,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { MyEventsComponent } from './components/my-events/my-events.component';
 import { ResolveGuard } from './guards/resolve.guard';
 import { ProfileComponent } from './components/profile/profile.component';
+import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'event/edit/:id', component: EventFormComponent },
   { path: 'event/:id', component: EventDetailsComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'unauthorized', component: UnauthorizedComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent },
 ];
