@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
       this.eventList = data;
     });
     this.eventList = this.getUpcomingEvents();
-    console.log(this.eventList);
+    // console.log(this.eventList);
   }
 
   onExploreClicked() {

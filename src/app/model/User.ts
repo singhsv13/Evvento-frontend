@@ -19,7 +19,8 @@ export class User {
     this.name = name;
     this.email = email;
     this.password = password;
-    this.role = role; // Initialize role
+    this.role = role; 
+    this.token = '';
     this.regEvents = [];
   }
 }

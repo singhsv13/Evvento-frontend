@@ -48,7 +48,7 @@ export class ProfileComponent implements OnInit {
       console.log('User deleted successfully:', this.user);
 
       this.dialogueService.showDialogue('userDeleted');
-      this.authService.logOut(); // Log out and navigate to the login page
+      this.authService.logOut();
     } else {
       this.dialogueService.showDialogue('userNotFound');
       console.error('Error: User not found!');
@@ -65,18 +65,19 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
+    this.user.name = form.value.name; 
+    this.user.email = form.value.email; 
     // Simulate saving profile changes
-    const updatedUser = { ...this.user };
-    this.authService.loggedUser = updatedUser;
+    // const updatedUser = { ...this.user };
+    this.authService.loggedUser = this.user;
 
     this.dialogueService.showDialogue('userUpdated');
-    this.showModal = false; // Close modal
-    console.log('Profile updated successfully:', updatedUser);
+    this.showModal = false;
+    console.log('Profile updated successfully:', this.user);
   }
 
   logout(): void {
     this.authService.logOut();
-    // Show the logout confirmation dialogue after logging out
     this.dialogueService.showDialogue('logoutConfirmation');
   }
 }

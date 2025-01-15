@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './shared/modules/shared.module';
 
 
@@ -20,6 +20,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { CustomDateValidatorDirective } from './shared/validators/custom-date-validator.directive';
 import { HomeComponent } from './components/home/home.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 
 
@@ -49,7 +50,9 @@ import { UnauthorizedComponent } from './components/unauthorized/unauthorized.co
     HttpClientModule,
     SharedModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
