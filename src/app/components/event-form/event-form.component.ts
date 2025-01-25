@@ -23,10 +23,11 @@ export class EventFormComponent implements OnInit {
     organisedBy: '',
     imageURL: '',
     expired: false,
+    isRegistered: false,
   };
 
   eventTypes = this.eventService.getEventTypes();
-
+  isImageUpload: boolean = false; // New property to handle image upload toggle
   isEditMode: boolean = false;
   eventId: string = '';
 
@@ -91,33 +92,92 @@ export class EventFormComponent implements OnInit {
     return result;
   }
 
+  // onFormSubmit(): void {
+  //   if (this.eventForm.invalid) {
+  //     console.error('Form is invalid');
+  //     this.dialogueService.showDialogue('registrationError');  
+  //     return;
+  //   }
+
+  //   const formValues = this.eventForm.value;
+  //   const today = new Date();
+  //   const eventDate = new Date(formValues.eventDate);
+
+  //   const isExpired = eventDate < today;
+
+  //   if (this.isEditMode) {
+  //     const updatedEvent: Event = {
+  //       id: this.eventId,
+  //       name: formValues.eventName,
+  //       type: formValues.eventType,
+  //       doe: formValues.eventDate,
+  //       desc: formValues.eventDesc,
+  //       location: formValues.eventLoc,
+  //       organisedBy: formValues.eventOrganiser,
+  //       imageURL: formValues.eventImageURL,
+  //       expired: isExpired,
+  //       isRegistered: this.event.isRegistered,
+  //     };
+
+  //     this.eventService.editEventDetails(this.eventId, updatedEvent).subscribe({
+  //       next: () => {
+  //         this.dialogueService.showDialogue('eventUpdated'); 
+  //         this.eventForm.reset();
+  //         this.isEditMode = false;
+  //       },
+  //       error: (err) => {
+  //         console.error('Error updating event:', err);
+  //         this.dialogueService.showDialogue('serverError');  
+  //       },
+  //     });
+  //   } else {
+  //     const newEvent: Event = {
+  //       id: this.eventIDGenerate(),
+  //       name: formValues.eventName,
+  //       type: formValues.eventType,
+  //       doe: formValues.eventDate,
+  //       desc: formValues.eventDesc,
+  //       location: formValues.eventLoc,
+  //       organisedBy: formValues.eventOrganiser,
+  //       imageURL: formValues.eventImageURL,
+  //       expired: isExpired,
+  //       isRegistered: this.event.isRegistered,
+  //     };
+
+  //     this.eventService.addNewEvent(newEvent);
+  //     this.dialogueService.showDialogue('eventCreated'); 
+  //     this.eventForm.reset();
+  //   }
+  // }
+
   onFormSubmit(): void {
     if (this.eventForm.invalid) {
       console.error('Form is invalid');
       this.dialogueService.showDialogue('registrationError');  
       return;
     }
-
+  
     const formValues = this.eventForm.value;
     const today = new Date();
     const eventDate = new Date(formValues.eventDate);
-
+  
     const isExpired = eventDate < today;
-
+  
+    const newEvent: Event = {
+      id: this.isEditMode ? this.eventId : this.eventIDGenerate(),
+      name: formValues.eventName,
+      type: formValues.eventType,
+      doe: formValues.eventDate,
+      desc: formValues.eventDesc,
+      location: formValues.eventLoc,
+      organisedBy: formValues.eventOrganiser,
+      imageURL: formValues.eventImageURL,
+      expired: isExpired,
+      isRegistered: this.event.isRegistered,
+    };
+  
     if (this.isEditMode) {
-      const updatedEvent: Event = {
-        id: this.eventId,
-        name: formValues.eventName,
-        type: formValues.eventType,
-        doe: formValues.eventDate,
-        desc: formValues.eventDesc,
-        location: formValues.eventLoc,
-        organisedBy: formValues.eventOrganiser,
-        imageURL: formValues.eventImageURL,
-        expired: isExpired,
-      };
-
-      this.eventService.editEventDetails(this.eventId, updatedEvent).subscribe({
+      this.eventService.editEventDetails(this.eventId, newEvent).subscribe({
         next: () => {
           this.dialogueService.showDialogue('eventUpdated'); 
           this.eventForm.reset();
@@ -129,21 +189,29 @@ export class EventFormComponent implements OnInit {
         },
       });
     } else {
-      const newEvent: Event = {
-        id: this.eventIDGenerate(),
-        name: formValues.eventName,
-        type: formValues.eventType,
-        doe: formValues.eventDate,
-        desc: formValues.eventDesc,
-        location: formValues.eventLoc,
-        organisedBy: formValues.eventOrganiser,
-        imageURL: formValues.eventImageURL,
-        expired: isExpired,
-      };
+      this.eventService.addNewEvent(newEvent).subscribe({
+        next: () => {
+          this.dialogueService.showDialogue('eventCreated');
+          this.eventService.registerEventForManager(newEvent); // Register event for eventManager
+          this.eventForm.reset();
+        },
+        error: (err) => {
+          console.error('Error creating event:', err);
+          this.dialogueService.showDialogue('serverError');  
+        },
+      });
+    }
+  }
+  
 
-      this.eventService.addNewEvent(newEvent);
-      this.dialogueService.showDialogue('eventCreated'); 
-      this.eventForm.reset();
+  onImageUpload(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.event.imageURL = reader.result as string;
+      };
+      reader.readAsDataURL(file);
     }
   }
 }

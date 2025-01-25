@@ -4,6 +4,7 @@ import { BehaviorSubject, delay, map, Observable, of } from 'rxjs';
 import { AuthService } from './auth.service';
 import { User } from '../model/User';
 import { Router } from '@angular/router';
+import { DialogueService } from './dialogue.service';
 
 @Injectable({
   providedIn: 'root',
@@ -243,16 +244,28 @@ export class EventService {
     'Others',
   ];
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private dialogueService : DialogueService) {}
 
   /**
    * Add a new event to the event list.
    */
-  addNewEvent(event: Event) {
+  // addNewEvent(event: Event) {
+  //   console.log('Added event:', event);
+  //   event.expired = false;
+  //   this.eventList.push(event);
+  //   this.dialogueService.showDialogue('eventCreated');
+  // }
+
+  addNewEvent(event: Event): Observable<Event> {
     console.log('Added event:', event);
     event.expired = false;
     this.eventList.push(event);
+    // Simulate adding the event to the backend and returning the observable.
+    return of(event);
   }
+  
+
+
 
   /**
    * Get an event by its ID.
@@ -413,4 +426,22 @@ export class EventService {
   getEventTypes() : string[] {
     return this.eventTypes;
   }
+
+  registerEventForManager(event: Event): void {
+    const currentUser = this.authService.getActiveUser(); // Assume you have a method to get the logged-in user
+    if (currentUser?.role === 'eventManager') {
+      currentUser.regEvents = [...currentUser.regEvents];
+      currentUser.regEvents.push(event);
+      console.log(`Event with ID ${event.id} added to event manager's registered events.`);
+    }
+  }
+
+  // returns all created events by event manager
+  getCreatedEvents() : Observable<Event[]>{
+
+    return of([]);
+  }
+
+  
+
 }
